@@ -2,6 +2,8 @@ package br.com.visitas.modelo;
 
 import javax.persistence.Entity;
 
+import br.com.visitas.modelo.pessoa.DefaultEntity;
+
 @Entity
 public class Usuario extends DefaultEntity {
 
