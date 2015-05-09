@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 public class JPAUtil {
 
-	private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("visitas-pu");
+	private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("test");
 	
 	public static EntityManager criaEntityManager(){
 		return factory.createEntityManager();
