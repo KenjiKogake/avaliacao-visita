@@ -12,7 +12,7 @@ public class PopulaBanco {
 		Usuario u = new Usuario();
 		
 		u.setNome("Kenji");
-		u.setCpf("4281498789312");
+		u.setCpf("123123123");
 
 		em.getTransaction().begin();
 		

@@ -1,57 +1,48 @@
 package br.com.visitas.modelo.questionario;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.Type;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import br.com.visitas.modelo.imovel.Imovel;
 import br.com.visitas.modelo.pessoa.Cliente;
 import br.com.visitas.modelo.pessoa.Corretor;
 
 @Entity
-public class Avaliacao {
+public class Avaliacao{
+	//	Não precisamos de código da avaliação, uma visita pode ter apenas uma avaliação, portanto será PK
 	@Id
-	private long codAvaliacao;
-	private List<Questao> listQuestoes;
+	private long codVisita;
+
+	@ManyToOne
+	private Imovel imovel;
+	
+	@ManyToOne
+	private Cliente cliente;
+	
+	@ManyToOne
+	private Corretor corretor;
+	
 	private double valorAtual;
 	private double valorSugerido;
 	
-	private Imovel imovel;
 	private Date dataVisita;
-	/* Id da visita que é gerado do sistema */
-	private long codVisita;
-	
-	private Cliente cliente;
-	private Corretor corretor;
 	
 	private String observacoes;
 	
 	private SimpleDateFormat formatDate;
 	
+	@OneToMany(mappedBy="id.avaliacao", fetch=FetchType.LAZY)
+	private List<QuestoesDaAvaliacao> questoes;
+	
 	public Avaliacao() {
 		formatDate = new SimpleDateFormat("dd/MM/yyyy");
-	}
-
-	public long getCodAvaliacao() {
-		return codAvaliacao;
-	}
-
-	public void setCodAvaliacao(long codAvaliacao) {
-		this.codAvaliacao = codAvaliacao;
-	}
-
-	public List<Questao> getListQuestoes() {
-		return listQuestoes;
-	}
-
-	public void setListQuestoes(List<Questao> listQuestoes) {
-		this.listQuestoes = listQuestoes;
 	}
 
 	public double getValorAtual() {
@@ -117,4 +108,13 @@ public class Avaliacao {
 	public void setObservacoes(String observacoes) {
 		this.observacoes = observacoes;
 	}
+
+	public List<QuestoesDaAvaliacao> getQuestoes() {
+		return questoes;
+	}
+
+	public void setQuestoes(List<QuestoesDaAvaliacao> questoes) {
+		this.questoes = questoes;
+	}
+
 }
