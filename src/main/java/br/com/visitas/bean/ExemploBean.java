@@ -9,6 +9,7 @@ public class ExemploBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	
 	private String nome;
 
 	public void nomeAlterado() {

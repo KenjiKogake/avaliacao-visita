@@ -1,5 +1,4 @@
 package br.com.visitas.DAO;
-
 import javax.persistence.EntityManager;
 
 import br.com.visitas.modelo.JPAUtil;

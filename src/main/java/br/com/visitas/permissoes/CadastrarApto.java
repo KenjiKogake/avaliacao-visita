@@ -1,7 +1,6 @@
 package br.com.visitas.permissoes;
 
 import br.com.visitas.factory.CargosFactory;
-import br.com.visitas.modelo.pessoa.Corretor;
 import br.com.visitas.modelo.pessoa.Funcionario;
 
 public class CadastrarApto extends Permissoes {

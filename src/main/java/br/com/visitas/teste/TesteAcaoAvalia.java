@@ -8,6 +8,7 @@ import br.com.visitas.permissoes.ConsultarApto;
 
 public class TesteAcaoAvalia {
 	public static void main(String[] args) {
+		
 		AvaliaPermissao permissao = new CadastrarApto();
 		Atendente a = new Atendente(); 
 		System.out.println(permissao.avalia(a));
