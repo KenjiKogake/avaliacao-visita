@@ -11,8 +11,6 @@ import br.com.visitas.modelo.questionario.Avaliacao;
 
 @Entity
 public class Cliente extends Pessoa {
-	private static final long serialVersionUID = 1L;
-
 	/* Este campo deve ser definido com Primary */
 	@Id
 	private long codigo;

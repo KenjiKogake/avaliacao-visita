@@ -1,12 +1,11 @@
 package br.com.visitas.DAO;
 import javax.persistence.EntityManager;
 
-import br.com.visitas.modelo.JPAUtil;
 import br.com.visitas.modelo.Usuario;
 
 public class PopulaBanco {
 	public static void main(String[] args) {
-		EntityManager em = JPAUtil.criaEntityManager();
+		EntityManager em = new EntityManagerProducer().createEntityManager();
 		
 		Usuario u = new Usuario();
 		

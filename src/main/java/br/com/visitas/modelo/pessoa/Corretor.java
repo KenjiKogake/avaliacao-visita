@@ -2,13 +2,11 @@ package br.com.visitas.modelo.pessoa;
 
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import br.com.visitas.modelo.questionario.Avaliacao;
 
-@Entity
 public class Corretor extends Funcionario {
 	/* Atributos padrão como ID já foi herdado na super classe Pessoa*/
 	

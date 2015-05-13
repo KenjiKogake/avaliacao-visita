@@ -1,6 +1,7 @@
 package br.com.visitas.modelo.questionario;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,13 +13,13 @@ import javax.persistence.OneToMany;
 
 import br.com.visitas.modelo.imovel.Imovel;
 import br.com.visitas.modelo.pessoa.Cliente;
-import br.com.visitas.modelo.pessoa.Corretor;
+import br.com.visitas.modelo.pessoa.Funcionario;
 
 @Entity
 public class Avaliacao{
 	//	Não precisamos de código da avaliação, uma visita pode ter apenas uma avaliação, portanto será PK
 	@Id
-	private long codVisita;
+	private long id;
 
 	@ManyToOne
 	private Imovel imovel;
@@ -27,7 +28,7 @@ public class Avaliacao{
 	private Cliente cliente;
 	
 	@ManyToOne
-	private Corretor corretor;
+	private Funcionario corretor;
 	
 	private double valorAtual;
 	private double valorSugerido;
@@ -38,8 +39,8 @@ public class Avaliacao{
 	
 	private SimpleDateFormat formatDate;
 	
-	@OneToMany(mappedBy="id.avaliacao", fetch=FetchType.LAZY)
-	private List<QuestoesDaAvaliacao> questoes;
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="avaliacao")
+	private List<QuestoesDaAvaliacao> questoes = new ArrayList<QuestoesDaAvaliacao>();
 	
 	public Avaliacao() {
 		formatDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -77,14 +78,14 @@ public class Avaliacao{
 		this.dataVisita = dataVisita;
 	}
 
-	public long getCodVisita() {
-		return codVisita;
+	public long getId() {
+		return id;
 	}
-
-	public void setCodVisita(long codVisita) {
-		this.codVisita = codVisita;
+	
+	public void setId(long id) {
+		this.id = id;
 	}
-
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -93,11 +94,11 @@ public class Avaliacao{
 		this.cliente = cliente;
 	}
 
-	public Corretor getCorretor() {
+	public Funcionario getCorretor() {
 		return corretor;
 	}
 
-	public void setCorretor(Corretor corretor) {
+	public void setCorretor(Funcionario corretor) {
 		this.corretor = corretor;
 	}
 

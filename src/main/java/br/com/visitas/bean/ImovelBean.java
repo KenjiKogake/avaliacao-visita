@@ -3,25 +3,43 @@ package br.com.visitas.bean;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import br.com.visitas.DAO.DAO;
+import br.com.visitas.DAO.EntityManagerProducer;
 import br.com.visitas.modelo.imovel.Imovel;
 
-@ManagedBean
+@Named
+@ViewScoped
 public class ImovelBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<Imovel> imoveis;
-	private final DAO<Imovel> dao = new DAO<Imovel>(Imovel.class);
+//	@Inject private DAO<Imovel> dao;
+	private DAO<Imovel> dao = new DAO<Imovel>(Imovel.class, new EntityManagerProducer().createEntityManager());
+	
+//	@Inject private EntityManager em;
 	private Imovel imovel;
 
 	public void buscaTodos() {
-		this.imoveis = dao.listaTodos();
+		
+//		try {
+//			
+//			CriteriaQuery<Imovel> query = em.getCriteriaBuilder().createQuery(Imovel.class);
+//			query.select(query.from(Imovel.class));
+//
+//			this.imoveis = em.createQuery(query).getResultList();
+//			
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+					this.imoveis = dao.listaTodos();
 	}
 	
 	public void filtrar(){
-		this.imoveis = dao.listaFiltrada("teste");
+		buscaTodos();
+//		this.imoveis = dao.listaFiltrada("teste");
 	}
 
 	public List<Imovel> getImoveis() {

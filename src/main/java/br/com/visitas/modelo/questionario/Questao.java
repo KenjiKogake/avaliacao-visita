@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 public class Questao {
 	@Id
-	private long codQuestao;
+	private long id;
 
 	@NotEmpty
 	private String questao;
@@ -21,15 +21,15 @@ public class Questao {
 	@ManyToOne(optional=false)
 	private TipoQuestao tipo;
 
-	@OneToMany(mappedBy = "id.questao", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
 	private List<QuestoesDaAvaliacao> avaliacoes;
 
-	public long getCodQuestao() {
-		return codQuestao;
+	public long getId() {
+		return id;
 	}
 
-	public void setCodQuestao(long codQuestao) {
-		this.codQuestao = codQuestao;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getQuestao() {

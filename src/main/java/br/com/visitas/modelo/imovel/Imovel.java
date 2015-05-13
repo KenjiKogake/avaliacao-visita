@@ -1,5 +1,6 @@
 package br.com.visitas.modelo.imovel;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,7 +11,9 @@ import javax.persistence.OneToMany;
 import br.com.visitas.modelo.questionario.Avaliacao;
 
 @Entity
-public class Imovel {
+public class Imovel implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	private long codigoImovel;
 	

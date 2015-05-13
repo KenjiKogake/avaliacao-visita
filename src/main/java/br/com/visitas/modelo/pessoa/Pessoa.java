@@ -6,8 +6,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @MappedSuperclass
-public abstract class Pessoa extends DefaultEntity {
-
+public abstract class Pessoa {
 	@NotEmpty
 	private String nome;
 

@@ -3,41 +3,37 @@ package br.com.visitas.modelo.questionario;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 
 @Embeddable
 public class QuestoesDaAvaliacaoId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(optional=false)
-	private Questao questao;
+	private long questao_id;
 	
-	@ManyToOne(optional=false)
-	private Avaliacao avaliacao;
+	private long avaliacao_id;
 
-	public Questao getQuestao() {
-		return questao;
+	public long getQuestao_id() {
+		return questao_id;
 	}
 
-	public void setQuestao(Questao questao) {
-		this.questao = questao;
+	public void setQuestao_id(long questao_id) {
+		this.questao_id = questao_id;
 	}
 
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
+	public long getAvaliacao_id() {
+		return avaliacao_id;
 	}
 
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
+	public void setAvaliacao_id(long avaliacao_id) {
+		this.avaliacao_id = avaliacao_id;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((avaliacao == null) ? 0 : avaliacao.hashCode());
-		result = prime * result + ((questao == null) ? 0 : questao.hashCode());
+		result = prime * result + (int) (avaliacao_id ^ (avaliacao_id >>> 32));
+		result = prime * result + (int) (questao_id ^ (questao_id >>> 32));
 		return result;
 	}
 
@@ -50,15 +46,9 @@ public class QuestoesDaAvaliacaoId implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		QuestoesDaAvaliacaoId other = (QuestoesDaAvaliacaoId) obj;
-		if (avaliacao == null) {
-			if (other.avaliacao != null)
-				return false;
-		} else if (!avaliacao.equals(other.avaliacao))
+		if (avaliacao_id != other.avaliacao_id)
 			return false;
-		if (questao == null) {
-			if (other.questao != null)
-				return false;
-		} else if (!questao.equals(other.questao))
+		if (questao_id != other.questao_id)
 			return false;
 		return true;
 	}

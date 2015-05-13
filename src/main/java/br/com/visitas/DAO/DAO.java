@@ -12,19 +12,18 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.visitas.modelo.JPAUtil;
 import br.com.visitas.modelo.imovel.Imovel;
 
 public class DAO<T> implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager em;
 	private final Class<T> classe;
+	private EntityManager em;
 	
-	public DAO(Class<T> classe) {
+	public DAO(Class<T> classe, EntityManager em) {
 		this.classe = classe;
-		em = JPAUtil.criaEntityManager();
+		this.em = em;
 	}
 	
 	public void adiciona(T t) throws Exception{
@@ -75,6 +74,7 @@ public class DAO<T> implements Serializable{
 	public List<T> listaTodos() {
 		List<T> lista = new ArrayList<T>();
 		try {
+			System.out.println(em == null);
 			
 			CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
 			query.select(query.from(classe));
@@ -85,7 +85,7 @@ public class DAO<T> implements Serializable{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally{
-			em.close();
+//			em.close();
 		}
 		return lista;
 	}
