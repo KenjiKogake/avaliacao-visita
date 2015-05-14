@@ -20,8 +20,6 @@ public class Imovel implements Serializable{
 	@OneToMany(mappedBy="imovel", fetch=FetchType.LAZY)
 	private List<Avaliacao> avaliacoes;
 	
-	private String descricao;
-
 	public long getCodigoImovel() {
 		return codigoImovel;
 	}
@@ -39,11 +37,4 @@ public class Imovel implements Serializable{
 		this.avaliacoes = avaliacoes;
 	}
 	
-	public String getDescricao() {
-		return descricao;
-	}
-	
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
 }

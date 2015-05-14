@@ -1,33 +1,42 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<meta charset="UTF-8"/>
-	
-	<f:metadata>
-		<f:viewAction action="#{imovelBean.buscaTodos}"/>
-	</f:metadata>
-	
-	<title>Exemplo</title>
-</h:head>
-<h:body>
-	<h:form id="frm">
-		<p:panelGrid columns="1">
-			<p:commandButton value="Consultar" update="table" process="@form" 
-				action="#{imovelBean.filtrar}"/>
-		</p:panelGrid>
-	
 
-		<p:dataTable id="table" value="#{imovelBean.imoveis}" var="i">
-			<p:column headerText="Id">
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	<p:commandButton value="Novo" onclick="PF('imovelDialog').show()"/>
+	<h:form id="formLista">
+		<h:panelGrid columns="1">
+			<p:inputText value="#{imovelBean.filtro.codigo}" placeholder="Filtro por Código"/>
+		</h:panelGrid>
+	
+		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rows="5"
+			paginator="true">
+			<p:column headerText="Id" sortBy="#{i.codigoImovel}">
 				<h:outputText value="#{i.codigoImovel}"/>
-			</p:column>
-			<p:column headerText="Descricao">
-				<h:outputText value="#{i.descricao}"/>
 			</p:column>
 		</p:dataTable>
 	</h:form>
-</h:body>
+	
+	<p:dialog header="Cadastro de Imóvel" widgetVar="imovelDialog" resizable="false" 
+		modal="true" draggable="false" closeOnEscape="true">
+		<h:form id="form">
+			<h:panelGrid columns="2" id="imovelPanelGrid">
+				<h:outputLabel for="codigo" value="Código"/>
+				<p:inputText id="codigo" value="#{imovelBean.imovel.codigoImovel}"/>
+				
+				<p:commandButton value="Gravar" actionListener="#{imovelBean.salvar}" update=":formLista"
+					process="@form" oncomplete="PF('imovelDialog').hide()"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	</ui:define>
+</ui:composition>
 </html>

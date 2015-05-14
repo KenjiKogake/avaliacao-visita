@@ -2,52 +2,53 @@ package br.com.visitas.bean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
+
 import br.com.visitas.DAO.DAO;
-import br.com.visitas.DAO.EntityManagerProducer;
+import br.com.visitas.filter.Imoveis;
+import br.com.visitas.filter.ImoveisFilterTable;
 import br.com.visitas.modelo.imovel.Imovel;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class ImovelBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private List<Imovel> imoveis;
-//	@Inject private DAO<Imovel> dao;
-	private DAO<Imovel> dao = new DAO<Imovel>(Imovel.class, new EntityManagerProducer().createEntityManager());
+	@Inject private DAO<Imovel> dao;
 	
-//	@Inject private EntityManager em;
-	private Imovel imovel;
-
-	public void buscaTodos() {
-		
-//		try {
-//			
-//			CriteriaQuery<Imovel> query = em.getCriteriaBuilder().createQuery(Imovel.class);
-//			query.select(query.from(Imovel.class));
-//
-//			this.imoveis = em.createQuery(query).getResultList();
-//			
-//		}catch (Exception e) {
-//			e.printStackTrace();
-//		}
-					this.imoveis = dao.listaTodos();
-	}
+	@Inject private Imoveis imoveis;
+	@Inject private ImoveisFilterTable filtro;
+	private LazyDataModel<Imovel> model;
 	
-	public void filtrar(){
-		buscaTodos();
-//		this.imoveis = dao.listaFiltrada("teste");
-	}
-
-	public List<Imovel> getImoveis() {
-		return imoveis;
-	}
-
-	public void setImoveis(List<Imovel> imoveis) {
-		this.imoveis = imoveis;
+	@Inject private Imovel imovel;
+	
+	public ImovelBean(){
+		model = new LazyDataModel<Imovel>() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public List<Imovel> load(int first, int pageSize,
+					String sortField, SortOrder sortOrder,
+					Map<String, Object> filters) {
+				
+				filtro.setPrimeiroRegistro(first);
+				filtro.setQuantidadeRegistros(pageSize);
+				filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));
+				filtro.setPropriedadeOrdenacao(sortField);
+				
+				setRowCount(imoveis.quantidadeFiltrados(filtro));
+				
+				return imoveis.filtrados(filtro);
+			}
+			
+		};
 	}
 
 	public Imovel getImovel() {
@@ -57,11 +58,18 @@ public class ImovelBean implements Serializable {
 	public void setImovel(Imovel imovel) {
 		this.imovel = imovel;
 	}
+	
+	public LazyDataModel<Imovel> getModel() {
+		return model;
+	}
+	
+	public ImoveisFilterTable getFiltro() {
+		return filtro;
+	}
 
 	public void salvar() {
 		try {
 			dao.adiciona(imovel);
-			buscaTodos();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

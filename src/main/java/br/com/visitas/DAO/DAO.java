@@ -37,46 +37,40 @@ public class DAO<T> implements Serializable{
 			// commita a transacao
 			em.getTransaction().commit();
 			
-			// fecha a entity manager
-			
-		}finally{
-			em.close();
-		}			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 
 	public void remove(T t) throws Exception{
-		try {
-			
+		try{
 			em.getTransaction().begin();
 			
 			em.remove(em.merge(t));
 			
 			em.getTransaction().commit();
-		} finally{
-			em.close();
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	public void atualiza(T t) throws Exception{
-		try {
-			
+		try{
 			em.getTransaction().begin();
 			
 			em.merge(t);
 	
 			em.getTransaction().commit();
-			
-		}finally{
-			em.close();
-		}	
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<T> listaTodos() {
 		List<T> lista = new ArrayList<T>();
 		try {
-			System.out.println(em == null);
-			
 			CriteriaQuery<T> query = em.getCriteriaBuilder().createQuery(classe);
+			
 			query.select(query.from(classe));
 
 			lista = em.createQuery(query).getResultList();
@@ -84,8 +78,6 @@ public class DAO<T> implements Serializable{
 			return lista;
 		}catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-//			em.close();
 		}
 		return lista;
 	}
@@ -96,8 +88,6 @@ public class DAO<T> implements Serializable{
 			return instancia;
 		}catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-			em.close();
 		}
 		return null;
 	}

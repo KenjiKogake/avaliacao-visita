@@ -8,15 +8,15 @@ import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-public class DAOFactory {
-	
+public class DAOFactory<T> {
+
 	@Inject
 	private EntityManager em;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Produces
 	@Dependent
-	public DAO create(InjectionPoint injectionPoint){
+	@Produces
+	public DAO<T> create(InjectionPoint injectionPoint){
 		ParameterizedType type = (ParameterizedType) injectionPoint.getType();
 	    Class classe = (Class) type.getActualTypeArguments()[0];
 	    return new DAO(classe, em);
