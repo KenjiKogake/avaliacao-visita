@@ -4,16 +4,16 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import br.com.visitas.modelo.DefaultEntity;
+
 @Entity
-public class Questao {
-	@Id
-	private long id;
+public class Questao extends DefaultEntity{
+	private static final long serialVersionUID = 1L;
 
 	@NotEmpty
 	private String questao;
@@ -23,14 +23,6 @@ public class Questao {
 
 	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
 	private List<QuestoesDaAvaliacao> avaliacoes;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getQuestao() {
 		return questao;

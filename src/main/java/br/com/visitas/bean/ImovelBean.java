@@ -70,6 +70,7 @@ public class ImovelBean implements Serializable {
 	public void salvar() {
 		try {
 			dao.adiciona(imovel);
+			imovel = new Imovel();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

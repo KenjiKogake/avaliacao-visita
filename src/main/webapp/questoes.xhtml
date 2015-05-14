@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	<p:commandButton value="Novo" onclick="PF('questaoDialog').show()"/>
+	<h:form id="formLista">
+		<h:panelGrid columns="1">
+			<p:inputText value="#{questaoBean.filtro.codigo}" placeholder="Filtro por Código"/>
+		</h:panelGrid>
+	
+		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5"
+			paginator="true">
+			<p:column headerText="Id" sortBy="#{q.id}">
+				<h:outputText value="#{q.id}"/>
+			</p:column>
+			<p:column headerText="Questão" sortBy="#{q.questao}">
+				<h:outputText value="#{q.questao}"/>
+			</p:column>
+			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo}">
+				<h:outputText value="#{q.tipo}"/>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<p:dialog header="Cadastro de Questão" widgetVar="questaoDialog" resizable="false" 
+		modal="true" draggable="false" closeOnEscape="true">
+		<h:form id="form">
+			<h:panelGrid columns="2" id="questaoPanelGrid">
+				<h:outputLabel for="questao" value="Questão"/>
+				<p:inputText id="questao" value="#{questaoBean.questao.questao}"/>
+				
+				<h:outputLabel for="tipo" value="Tipo de Questão"/>
+				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" >
+					<f:selectItems value="#{questaoBean.tiposQuestao}"/>
+				</p:selectOneMenu>
+				
+				<p:commandButton value="Gravar" actionListener="#{questaoBean.salvar}" update=":form :formLista"
+					process="@form" oncomplete="PF('questaoDialog').hide()"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	</ui:define>
+</ui:composition>
+</html>

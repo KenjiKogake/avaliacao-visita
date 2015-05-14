@@ -1,4 +1,4 @@
-package br.com.visitas.modelo.pessoa;
+package br.com.visitas.modelo;
 
 import java.io.Serializable;
 
