@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
@@ -36,6 +37,25 @@ public class QuestaoBean implements Serializable {
 	public QuestaoBean(){
 		model = new LazyDataModel<Questao>() {
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Questao getRowData(String rowKey) {
+
+				System.out.println("Entrou no getRowData");
+				@SuppressWarnings("unchecked")
+				List<Questao> questoes = (List<Questao>) getWrappedData();
+				System.out.println(questoes.size());
+				for (Questao questao : questoes) {
+					if(questao.getQuestao().equals(rowKey)) return questao;
+				}
+				return null;
+			}
+			
+			@Override
+			public Object getRowKey(Questao object) {
+				// TODO Auto-generated method stub
+				return super.getRowKey(object);
+			}
 			
 			@Override
 			public List<Questao> load(int first, int pageSize,
@@ -83,5 +103,9 @@ public class QuestaoBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	 public void onRowSelect(SelectEvent event) {
+		 questao = (Questao) event.getObject();
+    }
 
 }

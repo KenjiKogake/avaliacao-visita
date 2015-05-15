@@ -38,4 +38,12 @@ public class TipoQuestao extends DefaultEntity{
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	
+	public List<Questao> getQuestoes() {
+		return questoes;
+	}
+	
+	public void setQuestoes(List<Questao> questoes) {
+		this.questoes = questoes;
+	}
 }
