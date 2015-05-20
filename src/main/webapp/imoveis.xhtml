@@ -13,10 +13,10 @@
 	<p:commandButton value="Novo" onclick="PF('imovelDialog').show()"/>
 	<h:form id="formLista">
 		<h:panelGrid columns="1">
-			<p:inputText value="#{imovelBean.filtro.codigo}" placeholder="Filtro por Código"/>
+			<p:inputText value="#{imovelBean.filtroImovel.codigoImovel}" placeholder="Filtro por Código"/>
 		</h:panelGrid>
 	
-		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rows="5"
+		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rows="5" rowKey="#{q}"
 			paginator="true">
 			<p:column headerText="Id" sortBy="#{i.codigoImovel}">
 				<h:outputText value="#{i.codigoImovel}"/>

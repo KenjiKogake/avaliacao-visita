@@ -8,13 +8,12 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import br.com.visitas.DAO.DAO;
-import br.com.visitas.filter.Questoes;
-import br.com.visitas.filter.QuestoesFilterTable;
+import br.com.visitas.filter.FilterTable;
+import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.questionario.Questao;
 import br.com.visitas.modelo.questionario.TipoQuestao;
 
@@ -24,11 +23,11 @@ public class QuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject private DAO<Questao> dao;
-	
-	@Inject private Questoes questoes;
-	@Inject private QuestoesFilterTable filtro;
-	
 	@Inject DAO<TipoQuestao> daoTipo;
+	
+	@Inject private FilterTable filtro;
+	@Inject private LazyList<Questao> questoes;
+	@Inject private Questao filtroQuestao;
 	
 	private LazyDataModel<Questao> model;
 	
@@ -39,25 +38,6 @@ public class QuestaoBean implements Serializable {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Questao getRowData(String rowKey) {
-
-				System.out.println("Entrou no getRowData");
-				@SuppressWarnings("unchecked")
-				List<Questao> questoes = (List<Questao>) getWrappedData();
-				System.out.println(questoes.size());
-				for (Questao questao : questoes) {
-					if(questao.getQuestao().equals(rowKey)) return questao;
-				}
-				return null;
-			}
-			
-			@Override
-			public Object getRowKey(Questao object) {
-				// TODO Auto-generated method stub
-				return super.getRowKey(object);
-			}
-			
-			@Override
 			public List<Questao> load(int first, int pageSize,
 					String sortField, SortOrder sortOrder,
 					Map<String, Object> filters) {
@@ -67,9 +47,9 @@ public class QuestaoBean implements Serializable {
 				filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));
 				filtro.setPropriedadeOrdenacao(sortField);
 				
-				setRowCount(questoes.quantidadeFiltrados(filtro));
+				setRowCount(questoes.quantidadeFiltrados(filtro, filtroQuestao));
 				
-				return questoes.filtrados(filtro);
+				return questoes.filtrados(filtro, filtroQuestao);
 			}
 			
 		};
@@ -91,7 +71,7 @@ public class QuestaoBean implements Serializable {
 		return model;
 	}
 	
-	public QuestoesFilterTable getFiltro() {
+	public FilterTable getFiltro() {
 		return filtro;
 	}
 
@@ -103,9 +83,12 @@ public class QuestaoBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
-	 public void onRowSelect(SelectEvent event) {
-		 questao = (Questao) event.getObject();
-    }
 
+	public Questao getFiltroQuestao() {
+		return filtroQuestao;
+	}
+	
+	public void setFiltro(FilterTable filtro) {
+		this.filtro = filtro;
+	}
 }

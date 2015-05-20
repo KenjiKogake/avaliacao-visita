@@ -12,8 +12,8 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import br.com.visitas.DAO.DAO;
-import br.com.visitas.filter.TiposQuestao;
-import br.com.visitas.filter.TiposQuestaoFilterTable;
+import br.com.visitas.filter.FilterTable;
+import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.questionario.TipoQuestao;
 
 @Named
@@ -23,11 +23,13 @@ public class TipoQuestaoBean implements Serializable {
 
 	@Inject private DAO<TipoQuestao> dao;
 	
-	@Inject private TiposQuestao tipos;
-	@Inject private TiposQuestaoFilterTable filtro;
+	@Inject private LazyList<TipoQuestao> tipos;
+	@Inject private FilterTable filtro;
 	private LazyDataModel<TipoQuestao> model;
 	
 	@Inject private TipoQuestao tipoQuestao;
+	
+	@Inject private TipoQuestao filtroTipoQuestao;
 	
 	public TipoQuestaoBean(){
 		model = new LazyDataModel<TipoQuestao>() {
@@ -43,9 +45,9 @@ public class TipoQuestaoBean implements Serializable {
 				filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));
 				filtro.setPropriedadeOrdenacao(sortField);
 				
-				setRowCount(tipos.quantidadeFiltrados(filtro));
+				setRowCount(tipos.quantidadeFiltrados(filtro, filtroTipoQuestao));
 				
-				return tipos.filtrados(filtro);
+				return tipos.filtrados(filtro, filtroTipoQuestao);
 			}
 		};
 	}
@@ -62,8 +64,16 @@ public class TipoQuestaoBean implements Serializable {
 		return model;
 	}
 	
-	public TiposQuestaoFilterTable getFiltro() {
+	public FilterTable getFiltro() {
 		return filtro;
+	}
+	
+	public TipoQuestao getFiltroTipoQuestao() {
+		return filtroTipoQuestao;
+	}
+	
+	public void setFiltroTipoQuestao(TipoQuestao filtroTipoQuestao) {
+		this.filtroTipoQuestao = filtroTipoQuestao;
 	}
 
 	public void salvar() {

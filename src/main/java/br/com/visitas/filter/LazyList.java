@@ -3,27 +3,30 @@ package br.com.visitas.filter;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.visitas.modelo.questionario.TipoQuestao;
-
-public class TiposQuestao implements Serializable {
-
+public class LazyList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Inject
-	private EntityManager manager;
+	private Class<T> classe;
+
+	private EntityManager em;
+	
+	public LazyList(Class<T> classe, EntityManager em){
+		this.classe = classe;
+		this.em = em;
+	}
 	
 	@SuppressWarnings("unchecked")
-	public List<TipoQuestao> filtrados(TiposQuestaoFilterTable filtro) {
-		Criteria criteria = criarCriteriaParaFiltro(filtro);
+	public List<T> filtrados(FilterTable filtro, Object o) {
+		Criteria criteria = criarCriteriaParaFiltro(filtro, o);
 		
 		criteria.setFirstResult(filtro.getPrimeiroRegistro());
 		criteria.setMaxResults(filtro.getQuantidadeRegistros());
@@ -37,21 +40,27 @@ public class TiposQuestao implements Serializable {
 		return criteria.list();
 	}
 	
-	public int quantidadeFiltrados(TiposQuestaoFilterTable filtro) {
-		Criteria criteria = criarCriteriaParaFiltro(filtro);
+	public int quantidadeFiltrados(FilterTable filtro, Object o) {
+		Criteria criteria = criarCriteriaParaFiltro(filtro, o);
 		
 		criteria.setProjection(Projections.rowCount());
 		
 		return ((Number) criteria.uniqueResult()).intValue();
 	}
 	
-	private Criteria criarCriteriaParaFiltro(TiposQuestaoFilterTable filtro) {
-		Session session = manager.unwrap(Session.class);
-		Criteria criteria = session.createCriteria(TipoQuestao.class);
+	private Criteria criarCriteriaParaFiltro(FilterTable filtro, Object o) {
+		Session session = em.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(classe);
+
+		if(filtro.getId() != 0) criteria.add(Restrictions.idEq(filtro.getId()));
 		
-		if (filtro.getCodigo() != 0) {
-			criteria.add(Restrictions.idEq(filtro.getCodigo()));
-		}
+		Example example = Example.create(o)
+				.enableLike()
+				.ignoreCase()
+				.excludeZeroes();
+		
+		criteria.add(example);
+		
 		
 		return criteria;
 	}

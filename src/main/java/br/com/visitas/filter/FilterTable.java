@@ -2,14 +2,23 @@ package br.com.visitas.filter;
 
 import java.io.Serializable;
 
-public class DefaultFilterTable implements Serializable{
+public class FilterTable implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	private long id;
 	private int primeiroRegistro;
 	private int quantidadeRegistros;
 	private String propriedadeOrdenacao;
 	private boolean ascendente;
-
+	
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	public int getPrimeiroRegistro() {
 		return primeiroRegistro;
 	}
@@ -41,5 +50,5 @@ public class DefaultFilterTable implements Serializable{
 	public void setAscendente(boolean ascendente) {
 		this.ascendente = ascendente;
 	}
-
+	
 }

@@ -11,15 +11,21 @@
 	</ui:define>
 	<ui:define name="conteudo">
 	<p:commandButton value="Novo" onclick="PF('questaoDialog').show()"/>
-	<h:form id="formLista">
+	
+	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
-			<p:inputText value="#{questaoBean.filtro.codigo}" placeholder="Filtro por Código"/>
+			<p:inputText value="#{questaoBean.filtro.id}" placeholder="Filtro por Código">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{questaoBean.filtroQuestao.questao}" placeholder="Filtro por Questao">
+				<p:ajax update="formLista"/>
+			</p:inputText>
 		</h:panelGrid>
+	</h:form>
+	<h:form id="formLista">
 	
 		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5" rowKey="#{q}"
-			paginator="true" selectionMode="single" selection="#{questaoBean.questao}">
-			
-			<p:ajax event="rowSelect" listener="#{questaoBean.onRowSelect}" oncomplete="PF('questaoDialog').show()" update=":form"/>
+			paginator="true" selectionMode="single">
 			
 			<p:column headerText="Id" sortBy="#{q.id}">
 				<h:outputText value="#{q.id}"/>
@@ -41,7 +47,7 @@
 				<p:inputText id="questao" value="#{questaoBean.questao.questao}"/>
 				
 				<h:outputLabel for="tipo" value="Tipo de Questão"/>
-				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" converter="entityConverter" >
+				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" converter="entityConverter">
 					<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}"/>
 				</p:selectOneMenu>
 				

@@ -12,8 +12,8 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import br.com.visitas.DAO.DAO;
-import br.com.visitas.filter.Imoveis;
-import br.com.visitas.filter.ImoveisFilterTable;
+import br.com.visitas.filter.FilterTable;
+import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.imovel.Imovel;
 
 @Named
@@ -23,8 +23,11 @@ public class ImovelBean implements Serializable {
 
 	@Inject private DAO<Imovel> dao;
 	
-	@Inject private Imoveis imoveis;
-	@Inject private ImoveisFilterTable filtro;
+	@Inject private Imovel filtroImovel;
+	
+	@Inject private LazyList<Imovel> imoveis;
+	
+	@Inject private FilterTable filtro;
 	private LazyDataModel<Imovel> model;
 	
 	@Inject private Imovel imovel;
@@ -43,9 +46,9 @@ public class ImovelBean implements Serializable {
 				filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));
 				filtro.setPropriedadeOrdenacao(sortField);
 				
-				setRowCount(imoveis.quantidadeFiltrados(filtro));
+				setRowCount(imoveis.quantidadeFiltrados(filtro, filtroImovel));
 				
-				return imoveis.filtrados(filtro);
+				return imoveis.filtrados(filtro, filtroImovel);
 			}
 			
 		};
@@ -63,7 +66,7 @@ public class ImovelBean implements Serializable {
 		return model;
 	}
 	
-	public ImoveisFilterTable getFiltro() {
+	public FilterTable getFiltro() {
 		return filtro;
 	}
 
@@ -75,5 +78,15 @@ public class ImovelBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+
+	public Imovel getFiltroImovel() {
+		return filtroImovel;
+	}
+
+	public void setFiltroImovel(Imovel filtroImovel) {
+		this.filtroImovel = filtroImovel;
+	}
+	
+	
 
 }
