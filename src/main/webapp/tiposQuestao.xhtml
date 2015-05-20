@@ -11,14 +11,20 @@
 	</ui:define>
 	<ui:define name="conteudo">
 	<p:commandButton value="Novo" onclick="PF('tipoQuestaoDialog').show()"/>
-	<h:form id="formLista">
+	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
-			<p:inputText value="#{tipoQuestaoBean.filtro.codigo}" placeholder="Filtro por Código"/>
+			<p:inputText value="#{tipoQuestaoBean.filtroTipoQuestao.tipo}" placeholder="Filtro por Tipo">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{tipoQuestaoBean.filtroTipoQuestao.descricao}" placeholder="Filtro por Descrição">
+				<p:ajax update="formLista"/>
+			</p:inputText>
 		</h:panelGrid>
-	
+	</h:form>
+	<h:form id="formLista">
 		<p:dataTable id="table" value="#{tipoQuestaoBean.model}" var="t" lazy="true" rows="5"
 			paginator="true">
-			<p:column headerText="Id" sortBy="#{t.id}">
+			<p:column headerText="Id" sortBy="#{t.id}" filterBy="#{t.id}">
 				<h:outputText value="#{t.id}"/>
 			</p:column>
 			<p:column headerText="Tipo de Questão" sortBy="#{t.tipo}">

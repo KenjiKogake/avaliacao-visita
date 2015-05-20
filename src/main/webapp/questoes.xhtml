@@ -14,9 +14,6 @@
 	
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
-			<p:inputText value="#{questaoBean.filtro.id}" placeholder="Filtro por Código">
-				<p:ajax update="formLista"/>
-			</p:inputText>
 			<p:inputText value="#{questaoBean.filtroQuestao.questao}" placeholder="Filtro por Questao">
 				<p:ajax update="formLista"/>
 			</p:inputText>
@@ -27,7 +24,7 @@
 		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5" rowKey="#{q}"
 			paginator="true" selectionMode="single">
 			
-			<p:column headerText="Id" sortBy="#{q.id}">
+			<p:column headerText="Id" sortBy="#{q.id}" filterBy="#{q.id}">
 				<h:outputText value="#{q.id}"/>
 			</p:column>
 			<p:column headerText="Questão" sortBy="#{q.questao}">

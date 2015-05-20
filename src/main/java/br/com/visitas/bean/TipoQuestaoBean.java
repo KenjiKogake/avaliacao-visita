@@ -1,18 +1,14 @@
 package br.com.visitas.bean;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
-
 import br.com.visitas.DAO.DAO;
 import br.com.visitas.filter.FilterTable;
+import br.com.visitas.filter.LazyData;
 import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.questionario.TipoQuestao;
 
@@ -23,33 +19,19 @@ public class TipoQuestaoBean implements Serializable {
 
 	@Inject private DAO<TipoQuestao> dao;
 	
-	@Inject private LazyList<TipoQuestao> tipos;
-	@Inject private FilterTable filtro;
-	private LazyDataModel<TipoQuestao> model;
+	private LazyData<TipoQuestao> model;
 	
 	@Inject private TipoQuestao tipoQuestao;
 	
-	@Inject private TipoQuestao filtroTipoQuestao;
+	private TipoQuestao filtroTipoQuestao = new TipoQuestao();
 	
-	public TipoQuestaoBean(){
-		model = new LazyDataModel<TipoQuestao>() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public List<TipoQuestao> load(int first, int pageSize,
-					String sortField, SortOrder sortOrder,
-					Map<String, Object> filters) {
-				
-				filtro.setPrimeiroRegistro(first);
-				filtro.setQuantidadeRegistros(pageSize);
-				filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));
-				filtro.setPropriedadeOrdenacao(sortField);
-				
-				setRowCount(tipos.quantidadeFiltrados(filtro, filtroTipoQuestao));
-				
-				return tipos.filtrados(filtro, filtroTipoQuestao);
-			}
-		};
+	public TipoQuestaoBean() {
+		this(null, null);
+	}
+
+	@Inject
+	public TipoQuestaoBean(LazyList<TipoQuestao> imoveis, FilterTable filtro) {
+		model = new LazyData<TipoQuestao>(filtroTipoQuestao, imoveis, filtro);
 	}
 
 	public TipoQuestao getTipoQuestao() {
@@ -60,12 +42,8 @@ public class TipoQuestaoBean implements Serializable {
 		this.tipoQuestao = tipoQuestao;
 	}
 	
-	public LazyDataModel<TipoQuestao> getModel() {
+	public LazyData<TipoQuestao> getModel() {
 		return model;
-	}
-	
-	public FilterTable getFiltro() {
-		return filtro;
 	}
 	
 	public TipoQuestao getFiltroTipoQuestao() {

@@ -13,13 +13,12 @@
 	<p:commandButton value="Novo" onclick="PF('imovelDialog').show()"/>
 	<h:form id="formLista">
 		<h:panelGrid columns="1">
-			<p:inputText value="#{imovelBean.filtroImovel.codigoImovel}" placeholder="Filtro por Código"/>
 		</h:panelGrid>
 	
-		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rows="5" rowKey="#{q}"
+		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rows="5"
 			paginator="true">
-			<p:column headerText="Id" sortBy="#{i.codigoImovel}">
-				<h:outputText value="#{i.codigoImovel}"/>
+			<p:column headerText="Id" sortBy="#{i.id}" filterFunction="exact" filterBy="#{i.id}">
+				<h:outputText value="#{i.id}"/>
 			</p:column>
 		</p:dataTable>
 	</h:form>
@@ -29,7 +28,7 @@
 		<h:form id="form">
 			<h:panelGrid columns="2" id="imovelPanelGrid">
 				<h:outputLabel for="codigo" value="Código"/>
-				<p:inputText id="codigo" value="#{imovelBean.imovel.codigoImovel}"/>
+				<p:inputText id="codigo" value="#{imovelBean.imovel.id}"/>
 				
 				<p:commandButton value="Gravar" actionListener="#{imovelBean.salvar}" update=":form :formLista"
 					process="@form" oncomplete="PF('imovelDialog').hide()"/>

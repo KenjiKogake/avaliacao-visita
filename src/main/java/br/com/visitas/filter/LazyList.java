@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -25,8 +26,8 @@ public class LazyList<T> implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> filtrados(FilterTable filtro, Object o) {
-		Criteria criteria = criarCriteriaParaFiltro(filtro, o);
+	public List<T> filtrados(Long codigo, FilterTable filtro, Object o) {
+		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o);
 		
 		criteria.setFirstResult(filtro.getPrimeiroRegistro());
 		criteria.setMaxResults(filtro.getQuantidadeRegistros());
@@ -40,22 +41,22 @@ public class LazyList<T> implements Serializable {
 		return criteria.list();
 	}
 	
-	public int quantidadeFiltrados(FilterTable filtro, Object o) {
-		Criteria criteria = criarCriteriaParaFiltro(filtro, o);
+	public int quantidadeFiltrados(Long codigo, FilterTable filtro, Object o) {
+		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o);
 		
 		criteria.setProjection(Projections.rowCount());
 		
 		return ((Number) criteria.uniqueResult()).intValue();
 	}
 	
-	private Criteria criarCriteriaParaFiltro(FilterTable filtro, Object o) {
+	private Criteria criarCriteriaParaFiltro(Long codigo, FilterTable filtro, Object o) {
 		Session session = em.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(classe);
-
-		if(filtro.getId() != 0) criteria.add(Restrictions.idEq(filtro.getId()));
+		
+		if(codigo != 0) criteria.add(Restrictions.idEq(codigo));
 		
 		Example example = Example.create(o)
-				.enableLike()
+				.enableLike(MatchMode.ANYWHERE)
 				.ignoreCase()
 				.excludeZeroes();
 		
