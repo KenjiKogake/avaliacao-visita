@@ -17,12 +17,18 @@
 			<p:inputText value="#{questaoBean.filtroQuestao.questao}" placeholder="Filtro por Questao">
 				<p:ajax update="formLista"/>
 			</p:inputText>
+			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroTipoQuestao}">
+				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}"/>
+				<p:ajax update="formLista"/>
+			</p:selectOneMenu>
 		</h:panelGrid>
 	</h:form>
 	<h:form id="formLista">
 	
-		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5" rowKey="#{q}"
+		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5"
 			paginator="true" selectionMode="single">
+			
+			<p:ajax event="rowSelect" listener="#{questaoBean.onRowSelect}" oncomplete="PF('questaoDialog').show()" update="form"/>
 			
 			<p:column headerText="Id" sortBy="#{q.id}" filterBy="#{q.id}">
 				<h:outputText value="#{q.id}"/>
@@ -30,7 +36,7 @@
 			<p:column headerText="Questão" sortBy="#{q.questao}">
 				<h:outputText value="#{q.questao}"/>
 			</p:column>
-			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo.tipo}">
+			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo_tipo}">
 				<h:outputText value="#{q.tipo.tipo}"/>
 			</p:column>
 		</p:dataTable>
@@ -39,7 +45,9 @@
 	<p:dialog header="Cadastro de Questão" widgetVar="questaoDialog" resizable="false" 
 		modal="true" draggable="false" closeOnEscape="true">
 		<h:form id="form">
+			<h:inputHidden id="id" value="#{questaoBean.questao.id}"/>
 			<h:panelGrid columns="2" id="questaoPanelGrid">
+			
 				<h:outputLabel for="questao" value="Questão"/>
 				<p:inputText id="questao" value="#{questaoBean.questao.questao}"/>
 				

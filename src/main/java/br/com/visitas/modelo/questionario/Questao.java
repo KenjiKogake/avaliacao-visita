@@ -19,10 +19,10 @@ public class Questao extends DefaultEntity{
 	private String questao;
 	
 	@ManyToOne(optional=false)
-	private TipoQuestao tipo;
+	private TipoQuestao tipo = new TipoQuestao();
 
-	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
-	private List<QuestoesDaAvaliacao> avaliacoes;
+//	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
+//	private List<QuestoesDaAvaliacao> avaliacoes;
 
 	public String getQuestao() {
 		return questao;
@@ -40,11 +40,12 @@ public class Questao extends DefaultEntity{
 		this.tipo = tipo;
 	}
 
-	public List<QuestoesDaAvaliacao> getAvaliacoes() {
-		return avaliacoes;
-	}
+//	public List<QuestoesDaAvaliacao> getAvaliacoes() {
+//		return avaliacoes;
+//	}
 
-	public void setAvaliacoes(List<QuestoesDaAvaliacao> avaliacoes) {
-		this.avaliacoes = avaliacoes;
-	}
+//	public void setAvaliacoes(List<QuestoesDaAvaliacao> avaliacoes) {
+//		this.avaliacoes = avaliacoes;
+//	}
+	
 }

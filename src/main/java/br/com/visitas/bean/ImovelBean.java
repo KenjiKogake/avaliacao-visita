@@ -1,6 +1,8 @@
 package br.com.visitas.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -34,8 +36,10 @@ public class ImovelBean implements Serializable {
 	@Inject
 	public ImovelBean(DAO<Imovel> dao, LazyList<Imovel> imoveis, FilterTable filtro) {
 		this.dao = dao;
+		List<Object> listaFiltros = new ArrayList<Object>();
+		listaFiltros.add(filtroImovel);
 		
-		model = new LazyData<Imovel>(dao, filtroImovel, imoveis, filtro);
+		model = new LazyData<Imovel>(dao, listaFiltros, imoveis, filtro);
 	}
 	
 	public Imovel getImovel() {

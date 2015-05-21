@@ -26,7 +26,7 @@ public class LazyList<T> implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> filtrados(Long codigo, FilterTable filtro, Object o) {
+	public List<T> filtrados(Long codigo, FilterTable filtro, List<Object> o) {
 		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o);
 		
 		criteria.setFirstResult(filtro.getPrimeiroRegistro());
@@ -41,7 +41,7 @@ public class LazyList<T> implements Serializable {
 		return criteria.list();
 	}
 	
-	public int quantidadeFiltrados(Long codigo, FilterTable filtro, Object o) {
+	public int quantidadeFiltrados(Long codigo, FilterTable filtro, List<Object> o) {
 		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o);
 		
 		criteria.setProjection(Projections.rowCount());
@@ -49,18 +49,20 @@ public class LazyList<T> implements Serializable {
 		return ((Number) criteria.uniqueResult()).intValue();
 	}
 	
-	private Criteria criarCriteriaParaFiltro(Long codigo, FilterTable filtro, Object o) {
+	private Criteria criarCriteriaParaFiltro(Long codigo, FilterTable filtro, List<Object> o) {
 		Session session = em.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(classe);
 		
 		if(codigo != 0) criteria.add(Restrictions.idEq(codigo));
 		
-		Example example = Example.create(o)
-				.enableLike(MatchMode.ANYWHERE)
-				.ignoreCase()
-				.excludeZeroes();
-		
-		criteria.add(example);
+		for (Object object : o) {
+			Example example = Example.create(object)
+					.enableLike(MatchMode.ANYWHERE)
+					.ignoreCase()
+					.excludeZeroes();
+			
+			criteria.add(example);
+		}
 		
 		
 		return criteria;

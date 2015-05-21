@@ -6,6 +6,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
+
 import br.com.visitas.DAO.DAO;
 import br.com.visitas.filter.FilterTable;
 import br.com.visitas.filter.LazyData;
@@ -33,7 +35,7 @@ public class TipoQuestaoBean implements Serializable {
 	public TipoQuestaoBean(DAO<TipoQuestao> dao, LazyList<TipoQuestao> imoveis, FilterTable filtro) {
 		this.dao = dao;
 		
-		model = new LazyData<TipoQuestao>(dao, filtroTipoQuestao, imoveis, filtro);
+//		model = new LazyData<TipoQuestao>(dao, filtroTipoQuestao, imoveis, filtro);
 	}
 
 	public TipoQuestao getTipoQuestao() {
@@ -53,16 +55,24 @@ public class TipoQuestaoBean implements Serializable {
 	}
 	
 	public void setFiltroTipoQuestao(TipoQuestao filtroTipoQuestao) {
+		System.out.println("Entrou no setTipoQuestao");
 		this.filtroTipoQuestao = filtroTipoQuestao;
 	}
 
 	public void salvar() {
 		try {
-			dao.adiciona(tipoQuestao);
+			if(tipoQuestao.getId() == null)
+				dao.adiciona(tipoQuestao);
+			else 
+				dao.atualiza(tipoQuestao);
+			
 			tipoQuestao = new TipoQuestao();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void onRowSelect(SelectEvent event){
+		tipoQuestao = (TipoQuestao) event.getObject();
+	}
 }

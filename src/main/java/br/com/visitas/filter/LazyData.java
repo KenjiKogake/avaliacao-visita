@@ -13,7 +13,7 @@ import br.com.visitas.DAO.DAO;
 public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel<T>, Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private Object exampleFilter;
+	private List<Object> exampleFilter;
 
 	private LazyList<T> lista;
 
@@ -21,7 +21,11 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 
 	private DAO<T> dao;
 
-	public LazyData(DAO<T> dao, Object exampleFilter, LazyList<T> lista, FilterTable filtro) {
+	public LazyData(DAO<T> dao, List<Object> exampleFilter, LazyList<T> lista, FilterTable filtro) {
+		System.out.println("Construtor do LazyData");
+		
+		System.out.println(exampleFilter.size());
+		
 		this.dao = dao;
 		this.exampleFilter = exampleFilter;
 		this.lista = lista;
@@ -41,7 +45,7 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 	@Override
 	public List<T> load(int first, int pageSize, String sortField,
 			SortOrder sortOrder, Map<String, Object> filters) {
-		
+		System.out.println("Entrou no Load");
 		filtro.setPrimeiroRegistro(first);
 		filtro.setQuantidadeRegistros(pageSize);
 		filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));

@@ -23,7 +23,10 @@
 	</h:form>
 	<h:form id="formLista">
 		<p:dataTable id="table" value="#{tipoQuestaoBean.model}" var="t" lazy="true" rows="5"
-			paginator="true">
+			paginator="true" selectionMode="single">
+			
+			<p:ajax event="rowSelect" listener="#{tipoQuestaoBean.onRowSelect}" update="form" oncomplete="PF('tipoQuestaoDialog').show()"/>
+			
 			<p:column headerText="Id" sortBy="#{t.id}" filterBy="#{t.id}">
 				<h:outputText value="#{t.id}"/>
 			</p:column>
@@ -39,6 +42,7 @@
 	<p:dialog header="Cadastro de Tipo de Questão" widgetVar="tipoQuestaoDialog" resizable="false" 
 		modal="true" draggable="false" closeOnEscape="true">
 		<h:form id="form">
+		<h:inputHidden id="id" value="#{tipoQuestaoBean.tipoQuestao.id}"/>
 			<h:panelGrid columns="2" id="tipoQuestaoPanelGrid">
 				<h:outputLabel for="tipo" value="Tipo de Questão"/>
 				<p:inputText id="tipo" value="#{tipoQuestaoBean.tipoQuestao.tipo}"/>
