@@ -19,7 +19,6 @@ import br.com.visitas.modelo.questionario.TipoQuestao;
 public class QuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Inject
 	private DAO<Questao> dao;
 	@Inject
 	DAO<TipoQuestao> daoTipo;
@@ -32,12 +31,14 @@ public class QuestaoBean implements Serializable {
 	private Questao questao;
 
 	public QuestaoBean() {
-		this(null, null);
+		this(null, null, null);
 	}
 
 	@Inject
-	public QuestaoBean(LazyList<Questao> imoveis, FilterTable filtro) {
-		model = new LazyData<Questao>(filtroQuestao, imoveis, filtro);
+	public QuestaoBean(DAO<Questao> dao, LazyList<Questao> imoveis, FilterTable filtro) {
+		this.dao = dao;
+		
+		model = new LazyData<Questao>(dao, filtroQuestao, imoveis, filtro);
 	}
 
 	public List<TipoQuestao> getTiposQuestao() {

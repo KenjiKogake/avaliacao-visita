@@ -8,6 +8,8 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SelectableDataModel;
 import org.primefaces.model.SortOrder;
 
+import br.com.visitas.DAO.DAO;
+
 public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel<T>, Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -17,21 +19,23 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 
 	private FilterTable filtro;
 
-	public LazyData(Object exampleFilter, LazyList<T> lista, FilterTable filtro) {
-		
+	private DAO<T> dao;
+
+	public LazyData(DAO<T> dao, Object exampleFilter, LazyList<T> lista, FilterTable filtro) {
+		this.dao = dao;
 		this.exampleFilter = exampleFilter;
 		this.lista = lista;
 		this.filtro = filtro;
 	}
-
+	
 	@Override
-	public T getRowData() {
-		return super.getRowData();
+	public T getRowData(String rowKey) {
+		return dao.buscaPorId(Long.decode(rowKey));
 	}
 	
 	@Override
 	public Object getRowKey(T object) {
-		return super.getRowKey(object);
+		return object;
 	}
 	
 	@Override

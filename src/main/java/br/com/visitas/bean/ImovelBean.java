@@ -6,6 +6,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
+
 import br.com.visitas.DAO.DAO;
 import br.com.visitas.filter.FilterTable;
 import br.com.visitas.filter.LazyData;
@@ -17,21 +19,23 @@ import br.com.visitas.modelo.imovel.Imovel;
 public class ImovelBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Inject private DAO<Imovel> dao;
+	private DAO<Imovel> dao;
 	
 	private Imovel filtroImovel = new Imovel();
 	
 	private LazyData<Imovel> model;
 	
 	@Inject private Imovel imovel;
-	
+
 	public ImovelBean() {
-		this(null, null);
+		this(null, null, null);
 	}
 	
 	@Inject
-	public ImovelBean(LazyList<Imovel> imoveis, FilterTable filtro) {
-		model = new LazyData<Imovel>(filtroImovel, imoveis, filtro);
+	public ImovelBean(DAO<Imovel> dao, LazyList<Imovel> imoveis, FilterTable filtro) {
+		this.dao = dao;
+		
+		model = new LazyData<Imovel>(dao, filtroImovel, imoveis, filtro);
 	}
 	
 	public Imovel getImovel() {
@@ -65,6 +69,10 @@ public class ImovelBean implements Serializable {
 
 	public void setFiltroImovel(Imovel filtroImovel) {
 		this.filtroImovel = filtroImovel;
+	}
+	
+	public void onRowSelect(SelectEvent event){
+		imovel = (Imovel) event.getObject();
 	}
 	
 }

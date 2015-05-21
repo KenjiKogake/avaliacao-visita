@@ -15,8 +15,11 @@
 		<h:panelGrid columns="1">
 		</h:panelGrid>
 	
-		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rows="5"
-			paginator="true">
+		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rowsPerPageTemplate="10, 20, 30" rows="10"
+			paginator="true" selectionMode="single">
+			
+			<p:ajax event="rowSelect" listener="#{imovelBean.onRowSelect}" update="form" oncomplete="PF('imovelDialog').show()"/>
+			
 			<p:column headerText="Id" sortBy="#{i.id}" filterFunction="exact" filterBy="#{i.id}">
 				<h:outputText value="#{i.id}"/>
 			</p:column>
