@@ -2,6 +2,8 @@ package br.com.visitas.filter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 
@@ -12,6 +14,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+
+import br.com.visitas.modelo.questionario.TipoQuestao;
 
 public class LazyList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,8 +30,8 @@ public class LazyList<T> implements Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> filtrados(Long codigo, FilterTable filtro, List<Object> o) {
-		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o);
+	public List<T> filtrados(Long codigo, FilterTable filtro, Object o, Map<String, Object> filtrosAdicionais) {
+		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o, filtrosAdicionais);
 		
 		criteria.setFirstResult(filtro.getPrimeiroRegistro());
 		criteria.setMaxResults(filtro.getQuantidadeRegistros());
@@ -41,28 +45,44 @@ public class LazyList<T> implements Serializable {
 		return criteria.list();
 	}
 	
-	public int quantidadeFiltrados(Long codigo, FilterTable filtro, List<Object> o) {
-		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o);
+	public int quantidadeFiltrados(Long codigo, FilterTable filtro, Object o, Map<String, Object> filtrosAdicionais) {
+		Criteria criteria = criarCriteriaParaFiltro(codigo, filtro, o, filtrosAdicionais);
 		
 		criteria.setProjection(Projections.rowCount());
 		
 		return ((Number) criteria.uniqueResult()).intValue();
 	}
 	
-	private Criteria criarCriteriaParaFiltro(Long codigo, FilterTable filtro, List<Object> o) {
+	private Criteria criarCriteriaParaFiltro(Long codigo, FilterTable filtro, Object o, Map<String, Object> filtrosAdicionais) {
 		Session session = em.unwrap(Session.class);
 		Criteria criteria = session.createCriteria(classe);
 		
 		if(codigo != 0) criteria.add(Restrictions.idEq(codigo));
 		
-		for (Object object : o) {
-			Example example = Example.create(object)
-					.enableLike(MatchMode.ANYWHERE)
-					.ignoreCase()
-					.excludeZeroes();
-			
-			criteria.add(example);
+		Example example = Example.create(o)
+				.enableLike(MatchMode.ANYWHERE)
+				.ignoreCase()
+				.excludeZeroes();
+		
+		
+		
+		if(filtrosAdicionais.isEmpty()) criteria.add(example);
+		else{
+			for (Entry<String, Object> pair : filtrosAdicionais.entrySet()) {
+				System.out.println("Entrou no foreach");
+				System.out.println(pair.getKey());
+				TipoQuestao value = (TipoQuestao) pair.getValue();
+				
+				System.out.println(value.getTipo());
+				
+				System.out.println(pair.getValue());
+				
+				criteria.add(example)
+					.createCriteria(pair.getKey())
+					.add(Example.create(pair.getValue()));
+			}
 		}
+		
 		
 		
 		return criteria;

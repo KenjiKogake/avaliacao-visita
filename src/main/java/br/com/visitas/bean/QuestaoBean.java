@@ -1,8 +1,9 @@
 package br.com.visitas.bean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -23,10 +24,11 @@ public class QuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private DAO<Questao> dao;
-	@Inject
-	DAO<TipoQuestao> daoTipo;
+	
+	@Inject DAO<TipoQuestao> daoTipo;
 
 	private Questao filtroQuestao = new Questao();
+	
 	private TipoQuestao filtroTipoQuestao = new TipoQuestao();
 
 	private LazyData<Questao> model;
@@ -41,12 +43,19 @@ public class QuestaoBean implements Serializable {
 	@Inject
 	public QuestaoBean(DAO<Questao> dao, LazyList<Questao> imoveis, FilterTable filtro) {
 		this.dao = dao;
-		List<Object> listaFiltro = new ArrayList<Object>();
 		
-		listaFiltro.add(filtroQuestao);
-		if(filtroTipoQuestao.getId() != null) listaFiltro.add(filtroTipoQuestao);
+		Map<String, Object> filtrosss = new HashMap<String, Object>();
+		System.out.println(filtroTipoQuestao.getTipo());
+		System.out.println(filtroTipoQuestao.getId());
+
+//		filtroTipoQuestao.setId(1l);
+//		filtroTipoQuestao.setTipo("Avaliação do Condomínio");
 		
-		model = new LazyData<Questao>(dao, listaFiltro, imoveis, filtro);
+		filtrosss.put("tipo", filtroTipoQuestao);
+		
+		System.out.println(filtroQuestao.getQuestao());
+		
+		model = new LazyData<Questao>(dao, filtroQuestao, imoveis, filtro, filtrosss);
 	}
 
 	public List<TipoQuestao> getTiposQuestao() {
@@ -88,6 +97,10 @@ public class QuestaoBean implements Serializable {
 	
 	public TipoQuestao getFiltroTipoQuestao() {
 		return filtroTipoQuestao;
+	}
+	
+	public void setFiltroTipoQuestao(TipoQuestao filtroTipoQuestao) {
+		this.filtroTipoQuestao = filtroTipoQuestao;
 	}
 	
 	public void setFiltroQuestao(Questao filtroQuestao) {

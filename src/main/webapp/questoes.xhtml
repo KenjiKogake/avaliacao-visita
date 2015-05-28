@@ -15,12 +15,12 @@
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
 			<p:inputText value="#{questaoBean.filtroQuestao.questao}" placeholder="Filtro por Questao">
-				<p:ajax update="formLista"/>
 			</p:inputText>
-			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroTipoQuestao}">
+			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroTipoQuestao}" >
+				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
 				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}"/>
-				<p:ajax update="formLista"/>
 			</p:selectOneMenu>
+			<p:commandButton value="Submit" update="formLista" icon="ui-icon-check" process="formFiltro" immediate="true"/>
 		</h:panelGrid>
 	</h:form>
 	<h:form id="formLista">
