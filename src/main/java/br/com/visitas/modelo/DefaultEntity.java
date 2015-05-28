@@ -51,6 +51,8 @@ public class DefaultEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return this.getId().toString();
+		if(this.getId() != null) return this.getId().toString();
+		
+		return "0";
 	}
 }

@@ -1,6 +1,8 @@
 package br.com.visitas.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -35,7 +37,10 @@ public class TipoQuestaoBean implements Serializable {
 	public TipoQuestaoBean(DAO<TipoQuestao> dao, LazyList<TipoQuestao> imoveis, FilterTable filtro) {
 		this.dao = dao;
 		
-//		model = new LazyData<TipoQuestao>(dao, filtroTipoQuestao, imoveis, filtro);
+		List<Object> listaFiltros = new ArrayList<Object>();
+		listaFiltros.add(filtroTipoQuestao);
+		
+//		model = new LazyData<TipoQuestao>(dao, listaFiltros, imoveis, filtro);
 	}
 
 	public TipoQuestao getTipoQuestao() {

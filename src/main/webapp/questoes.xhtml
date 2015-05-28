@@ -17,7 +17,7 @@
 			<p:inputText value="#{questaoBean.filtroQuestao.questao}" placeholder="Filtro por Questao">
 				<p:ajax update="formLista"/>
 			</p:inputText>
-			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroTipoQuestao}">
+			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroTipoQuestao}" converter="entityConverter">
 				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}"/>
 				<p:ajax update="formLista"/>
 			</p:selectOneMenu>

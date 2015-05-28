@@ -39,7 +39,7 @@ public class ImovelBean implements Serializable {
 		List<Object> listaFiltros = new ArrayList<Object>();
 		listaFiltros.add(filtroImovel);
 		
-		model = new LazyData<Imovel>(dao, listaFiltros, imoveis, filtro);
+//		model = new LazyData<Imovel>(dao, listaFiltros, imoveis, filtro);
 	}
 	
 	public Imovel getImovel() {

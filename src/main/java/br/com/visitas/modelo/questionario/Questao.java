@@ -1,11 +1,7 @@
 package br.com.visitas.modelo.questionario;
 
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -25,10 +21,12 @@ public class Questao extends DefaultEntity{
 //	private List<QuestoesDaAvaliacao> avaliacoes;
 
 	public String getQuestao() {
+		System.out.println("GetQuestao");
 		return questao;
 	}
 
 	public void setQuestao(String questao) {
+		System.out.println("SetQuestao");
 		this.questao = questao;
 	}
 
@@ -37,6 +35,8 @@ public class Questao extends DefaultEntity{
 	}
 
 	public void setTipo(TipoQuestao tipo) {
+		System.out.println("SetTipoQuestao");
+		System.out.println(tipo.getTipo());
 		this.tipo = tipo;
 	}
 
