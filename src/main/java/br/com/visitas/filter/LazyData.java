@@ -23,12 +23,12 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 
 	private Map<String, Object> filtrosAdicionais;
 
-	public LazyData(DAO<T> dao, Object exampleFilter, LazyList<T> lista, FilterTable filtro, Map<String, Object> map) {
+	public LazyData(DAO<T> dao, LazyList<T> lista, Object exampleFilter, Map<String, Object> map) {
 		this.filtrosAdicionais = map;
 		this.dao = dao;
 		this.exampleFilter = exampleFilter;
 		this.lista = lista;
-		this.filtro = filtro;
+		this.filtro = new FilterTable();
 		
 	}
 	
@@ -45,7 +45,6 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 	@Override
 	public List<T> load(int first, int pageSize, String sortField,
 			SortOrder sortOrder, Map<String, Object> filters) {
-		System.out.println("Entrou no Load");
 		filtro.setPrimeiroRegistro(first);
 		filtro.setQuantidadeRegistros(pageSize);
 		filtro.setAscendente(SortOrder.ASCENDING.equals(sortOrder));

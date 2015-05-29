@@ -1,8 +1,6 @@
 package br.com.visitas.bean;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -11,7 +9,6 @@ import javax.inject.Named;
 import org.primefaces.event.SelectEvent;
 
 import br.com.visitas.DAO.DAO;
-import br.com.visitas.filter.FilterTable;
 import br.com.visitas.filter.LazyData;
 import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.questionario.TipoQuestao;
@@ -30,16 +27,14 @@ public class TipoQuestaoBean implements Serializable {
 	private TipoQuestao filtroTipoQuestao = new TipoQuestao();
 	
 	public TipoQuestaoBean() {
-		this(null, null, null);
+		this(null, null);
 	}
 
 	@Inject
-	public TipoQuestaoBean(DAO<TipoQuestao> dao, LazyList<TipoQuestao> imoveis, FilterTable filtro) {
+	public TipoQuestaoBean(DAO<TipoQuestao> dao, LazyList<TipoQuestao> imoveis) {
 		this.dao = dao;
 		
-		Map<String, Object> filtrosAdicionais = new HashMap<String, Object>();
-		
-		model = new LazyData<TipoQuestao>(dao, filtroTipoQuestao, imoveis, filtro, filtrosAdicionais);
+		model = new LazyData<TipoQuestao>(dao, imoveis, filtroTipoQuestao, null);
 	}
 
 	public TipoQuestao getTipoQuestao() {
@@ -59,7 +54,6 @@ public class TipoQuestaoBean implements Serializable {
 	}
 	
 	public void setFiltroTipoQuestao(TipoQuestao filtroTipoQuestao) {
-		System.out.println("Entrou no setTipoQuestao");
 		this.filtroTipoQuestao = filtroTipoQuestao;
 	}
 

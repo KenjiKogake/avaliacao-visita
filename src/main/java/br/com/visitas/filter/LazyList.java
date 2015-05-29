@@ -15,8 +15,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.visitas.modelo.questionario.TipoQuestao;
-
 public class LazyList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -64,26 +62,14 @@ public class LazyList<T> implements Serializable {
 				.ignoreCase()
 				.excludeZeroes();
 		
-		
-		
-		if(filtrosAdicionais.isEmpty()) criteria.add(example);
-		else{
+		 criteria.add(example);
+
+		if(filtrosAdicionais != null && !filtrosAdicionais.isEmpty()){
 			for (Entry<String, Object> pair : filtrosAdicionais.entrySet()) {
-				System.out.println("Entrou no foreach");
-				System.out.println(pair.getKey());
-				TipoQuestao value = (TipoQuestao) pair.getValue();
-				
-				System.out.println(value.getTipo());
-				
-				System.out.println(pair.getValue());
-				
-				criteria.add(example)
-					.createCriteria(pair.getKey())
+					criteria.createCriteria(pair.getKey())
 					.add(Example.create(pair.getValue()));
 			}
 		}
-		
-		
 		
 		return criteria;
 	}

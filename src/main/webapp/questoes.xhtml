@@ -14,13 +14,17 @@
 	
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
-			<p:inputText value="#{questaoBean.filtroQuestao.questao}" placeholder="Filtro por Questao">
+			<p:inputText  placeholder="Filtro por Questao"
+				binding="#{questaoBean.inputQuestao}">
+				<p:ajax update="formLista"/>
 			</p:inputText>
-			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroTipoQuestao}" >
+			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter"
+				binding="#{questaoBean.selectTipoQuestao}">
+				
+				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista"/>
 				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
-				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}"/>
+				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}" itemValue="#{t}"/>
 			</p:selectOneMenu>
-			<p:commandButton value="Submit" update="formLista" icon="ui-icon-check" process="formFiltro" immediate="true"/>
 		</h:panelGrid>
 	</h:form>
 	<h:form id="formLista">
@@ -43,7 +47,7 @@
 	</h:form>
 	
 	<p:dialog header="Cadastro de Questão" widgetVar="questaoDialog" resizable="false" 
-		modal="true" draggable="false" closeOnEscape="true">
+		modal="true" draggable="false" closeOnEscape="true" dynamic="true">
 		<h:form id="form">
 			<h:inputHidden id="id" value="#{questaoBean.questao.id}"/>
 			<h:panelGrid columns="2" id="questaoPanelGrid">

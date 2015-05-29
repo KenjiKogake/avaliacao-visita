@@ -6,13 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.component.inputtext.InputText;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 
 import br.com.visitas.DAO.DAO;
-import br.com.visitas.filter.FilterTable;
 import br.com.visitas.filter.LazyData;
 import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.questionario.Questao;
@@ -24,38 +26,79 @@ public class QuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private DAO<Questao> dao;
-	
 	@Inject DAO<TipoQuestao> daoTipo;
-
-	private Questao filtroQuestao = new Questao();
-	
-	private TipoQuestao filtroTipoQuestao = new TipoQuestao();
-
-	private LazyData<Questao> model;
 
 	@Inject
 	private Questao questao;
 
+	private Questao filtroQuestao = new Questao();
+	private LazyData<Questao> model;
+	private LazyList<Questao> imoveis;
+	private Map<String, Object> filtrosAdicionais = new HashMap<String, Object>();
+	
+	private InputText inputQuestao = new InputText();
+	private SelectOneMenu selectTipoQuestao = new SelectOneMenu();
+	
+	public InputText getInputQuestao() {
+		return inputQuestao;
+	}
+
+	public void setInputQuestao(InputText inputQuestao) {
+		this.inputQuestao = inputQuestao;
+	}
+
+	public SelectOneMenu getSelectTipoQuestao() {
+		return selectTipoQuestao;
+	}
+
+	public void setSelectTipoQuestao(SelectOneMenu selectTipoQuestao) {
+		this.selectTipoQuestao = selectTipoQuestao;
+	}
+
 	public QuestaoBean() {
-		this(null, null, null);
+		this(null, null);
 	}
 
 	@Inject
-	public QuestaoBean(DAO<Questao> dao, LazyList<Questao> imoveis, FilterTable filtro) {
+	public QuestaoBean(DAO<Questao> dao, LazyList<Questao> imoveis) {
 		this.dao = dao;
+		this.imoveis = imoveis;
 		
-		Map<String, Object> filtrosss = new HashMap<String, Object>();
-		System.out.println(filtroTipoQuestao.getTipo());
-		System.out.println(filtroTipoQuestao.getId());
-
-//		filtroTipoQuestao.setId(1l);
-//		filtroTipoQuestao.setTipo("Avaliação do Condomínio");
+		atualizaTabela();
+	}
+	
+	public void atualizaTabela(){
+		try {
+			System.out.println(selectTipoQuestao.getValue());
+			filtroQuestao.setTipo((TipoQuestao) selectTipoQuestao.getValue());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		try {
+			System.out.println(inputQuestao.getValue());
+			filtroQuestao.setQuestao((String) inputQuestao.getValue());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		
-		filtrosss.put("tipo", filtroTipoQuestao);
+//		if(filtroQuestao.getTipo() != null) filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
 		
-		System.out.println(filtroQuestao.getQuestao());
-		
-		model = new LazyData<Questao>(dao, filtroQuestao, imoveis, filtro, filtrosss);
+		model = new LazyData<Questao>(dao, imoveis, filtroQuestao, filtrosAdicionais);
+	}
+	
+	public void salvar() {
+		try {
+			if(questao.getId() == null){
+				dao.adiciona(questao);
+			}else{
+				dao.atualiza(questao);
+			}
+			questao = new Questao();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<TipoQuestao> getTiposQuestao() {
@@ -74,19 +117,6 @@ public class QuestaoBean implements Serializable {
 		return model;
 	}
 
-	public void salvar() {
-		try {
-			if(questao.getId() == null){
-				dao.adiciona(questao);
-			}else{
-				dao.atualiza(questao);
-			}
-			questao = new Questao();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void onRowSelect(SelectEvent event) {
 		this.questao = (Questao) event.getObject();
 	}
@@ -95,16 +125,11 @@ public class QuestaoBean implements Serializable {
 		return filtroQuestao;
 	}
 	
-	public TipoQuestao getFiltroTipoQuestao() {
-		return filtroTipoQuestao;
-	}
-	
-	public void setFiltroTipoQuestao(TipoQuestao filtroTipoQuestao) {
-		this.filtroTipoQuestao = filtroTipoQuestao;
-	}
-	
 	public void setFiltroQuestao(Questao filtroQuestao) {
-		System.out.println("Entrou no setFiltroQuestao");
 		this.filtroQuestao = filtroQuestao;
+	}
+	
+	public void aplicaFiltroOneMenu(AjaxBehaviorEvent event){
+		atualizaTabela();
 	}
 }
