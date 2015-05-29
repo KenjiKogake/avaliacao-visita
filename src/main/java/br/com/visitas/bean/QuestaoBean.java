@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -68,22 +69,36 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public void atualizaTabela(){
-		try {
-			System.out.println(selectTipoQuestao.getValue());
-			filtroQuestao.setTipo((TipoQuestao) selectTipoQuestao.getValue());
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		try {
-			System.out.println(inputQuestao.getValue());
-			filtroQuestao.setQuestao((String) inputQuestao.getValue());
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		
+		System.out.println("Entrou no Atualiza Tabela");
+		Object object = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("Filtro");
+		
+		
+		System.out.println(object == null);
+		
+		if(object != null) {
+			this.filtroQuestao = (Questao) object;
+			System.out.println(filtroQuestao.getTipo().getDescricao());
+			System.out.println(filtroQuestao.getQuestao());
 		}
 		
-//		if(filtroQuestao.getTipo() != null) filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
+//		try {
+//			System.out.println(selectTipoQuestao.getValue());
+//			filtroQuestao.setTipo((TipoQuestao) selectTipoQuestao.getValue());
+//		} catch (Exception e) {
+//			// TODO: handle exception
+		
+//			e.printStackTrace();
+//		}
+//		try {
+//			System.out.println(inputQuestao.getValue());
+//			filtroQuestao.setQuestao((String) inputQuestao.getValue());
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}
+		
+		if(filtroQuestao.getTipo() != null) filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
 		
 		model = new LazyData<Questao>(dao, imoveis, filtroQuestao, filtrosAdicionais);
 	}
@@ -122,6 +137,9 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public Questao getFiltroQuestao() {
+		System.out.println("Entrou no GetFiltroQuestao");
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("Filtro", filtroQuestao);
+		
 		return filtroQuestao;
 	}
 	

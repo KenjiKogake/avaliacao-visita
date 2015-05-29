@@ -14,12 +14,10 @@
 	
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
-			<p:inputText  placeholder="Filtro por Questao"
-				binding="#{questaoBean.inputQuestao}">
+			<p:inputText  placeholder="Filtro por Questao" value="#{questaoBean.filtroQuestao.questao}">
 				<p:ajax update="formLista"/>
 			</p:inputText>
-			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter"
-				binding="#{questaoBean.selectTipoQuestao}">
+			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter">
 				
 				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista"/>
 				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
