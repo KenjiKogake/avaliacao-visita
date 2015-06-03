@@ -14,16 +14,17 @@
 	
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
-			<p:inputText  placeholder="Filtro por Questao" value="#{questaoBean.filtroQuestao.questao}">
-				<p:ajax update="formLista"/>
+			<p:inputText placeholder="Filtro por Questao" value="#{questaoBean.filtroQuestao.questao}">
+				<p:ajax update="formLista:table"/>
 			</p:inputText>
+			
 			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter">
-				
-				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista"/>
-				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
+				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue="" noSelectionOption="true"/>
 				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}" itemValue="#{t}"/>
 			</p:selectOneMenu>
 		</h:panelGrid>
+		<p:commandButton action="#{questaoBean.atualizaTabela}" process="formFiltro" value="Filtrar" update="formLista"/>
 	</h:form>
 	<h:form id="formLista">
 	

@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
+import javax.annotation.ManagedBean;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.component.inputtext.InputText;
-import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 
 import br.com.visitas.DAO.DAO;
@@ -21,8 +19,8 @@ import br.com.visitas.filter.LazyList;
 import br.com.visitas.modelo.questionario.Questao;
 import br.com.visitas.modelo.questionario.TipoQuestao;
 
-@Named
-@RequestScoped
+@Named 
+@ManagedBean @ViewScoped
 public class QuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -37,25 +35,6 @@ public class QuestaoBean implements Serializable {
 	private LazyList<Questao> imoveis;
 	private Map<String, Object> filtrosAdicionais = new HashMap<String, Object>();
 	
-	private InputText inputQuestao = new InputText();
-	private SelectOneMenu selectTipoQuestao = new SelectOneMenu();
-	
-	public InputText getInputQuestao() {
-		return inputQuestao;
-	}
-
-	public void setInputQuestao(InputText inputQuestao) {
-		this.inputQuestao = inputQuestao;
-	}
-
-	public SelectOneMenu getSelectTipoQuestao() {
-		return selectTipoQuestao;
-	}
-
-	public void setSelectTipoQuestao(SelectOneMenu selectTipoQuestao) {
-		this.selectTipoQuestao = selectTipoQuestao;
-	}
-
 	public QuestaoBean() {
 		this(null, null);
 	}
@@ -69,35 +48,6 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public void atualizaTabela(){
-		
-		System.out.println("Entrou no Atualiza Tabela");
-		Object object = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("Filtro");
-		
-		
-		System.out.println(object == null);
-		
-		if(object != null) {
-			this.filtroQuestao = (Questao) object;
-			System.out.println(filtroQuestao.getTipo().getDescricao());
-			System.out.println(filtroQuestao.getQuestao());
-		}
-		
-//		try {
-//			System.out.println(selectTipoQuestao.getValue());
-//			filtroQuestao.setTipo((TipoQuestao) selectTipoQuestao.getValue());
-//		} catch (Exception e) {
-//			// TODO: handle exception
-		
-//			e.printStackTrace();
-//		}
-//		try {
-//			System.out.println(inputQuestao.getValue());
-//			filtroQuestao.setQuestao((String) inputQuestao.getValue());
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}
-		
 		if(filtroQuestao.getTipo() != null) filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
 		
 		model = new LazyData<Questao>(dao, imoveis, filtroQuestao, filtrosAdicionais);
@@ -137,9 +87,6 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public Questao getFiltroQuestao() {
-		System.out.println("Entrou no GetFiltroQuestao");
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("Filtro", filtroQuestao);
-		
 		return filtroQuestao;
 	}
 	
