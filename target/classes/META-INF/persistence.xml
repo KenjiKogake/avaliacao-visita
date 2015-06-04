@@ -8,15 +8,6 @@
 	        <!-- Implementação do JPA, no nosso caso Hibernate -->
 	        <provider>org.hibernate.ejb.HibernatePersistence</provider>
 		
-			
-			<class>br.com.visitas.modelo.Usuario</class>
-			<class>br.com.visitas.modelo.imovel.Imovel</class>
-			<class>br.com.visitas.modelo.pessoa.Cliente</class>
-			<class>br.com.visitas.modelo.questionario.Avaliacao</class>
-			<class>br.com.visitas.modelo.questionario.Questao</class>
-			<class>br.com.visitas.modelo.questionario.QuestoesDaAvaliacao</class>
-			<class>br.com.visitas.modelo.questionario.TipoQuestao</class>
-			
 	        <properties>
 	            <!-- propriedades JDBC -->
 	            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
@@ -27,7 +18,7 @@
 	            <!-- configurações especificas Hibernate -->
 	            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 <!-- 				<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />  -->
-	            <property name="hibernate.show_sql" value="false" />
+	            <property name="hibernate.show_sql" value="true" />
 	            <property name="hibernate.format_sql" value="true" />
 	            <property name="hibernate.hbm2ddl.auto" value="update" />
 	        </properties>
