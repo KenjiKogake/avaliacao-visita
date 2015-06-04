@@ -5,10 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import br.com.visitas.actions.CadastrarApto;
+import br.com.visitas.actions.ConsultarApto;
 import br.com.visitas.modelo.pessoa.Atendente;
 import br.com.visitas.modelo.pessoa.Corretor;
-import br.com.visitas.permissoes.CadastrarApto;
-import br.com.visitas.permissoes.ConsultarApto;
 
 public class AvaliaPermissaoTest {
 
