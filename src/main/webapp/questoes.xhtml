@@ -29,7 +29,7 @@
 	<h:form id="formLista">
 	
 		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5"
-			paginator="true" selectionMode="single">
+			paginator="true" selectionMode="single" rowKey="#{q.id}">
 			
 			<p:ajax event="rowSelect" listener="#{questaoBean.onRowSelect}" oncomplete="PF('questaoDialog').show()" update="form"/>
 			
@@ -39,7 +39,7 @@
 			<p:column headerText="Questão" sortBy="#{q.questao}">
 				<h:outputText value="#{q.questao}"/>
 			</p:column>
-			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo_tipo}">
+			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo}">
 				<h:outputText value="#{q.tipo.tipo}"/>
 			</p:column>
 		</p:dataTable>

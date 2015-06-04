@@ -16,7 +16,7 @@
 		</h:panelGrid>
 	
 		<p:dataTable id="table" value="#{imovelBean.model}" var="i" lazy="true" rowsPerPageTemplate="10, 20, 30" rows="10"
-			paginator="true" selectionMode="single">
+			paginator="true" selectionMode="single" rowKey="#{i.id}">
 			
 			<p:ajax event="rowSelect" listener="#{imovelBean.onRowSelect}" update="form" oncomplete="PF('imovelDialog').show()"/>
 			

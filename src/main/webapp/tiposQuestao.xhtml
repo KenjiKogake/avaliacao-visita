@@ -23,7 +23,7 @@
 	</h:form>
 	<h:form id="formLista">
 		<p:dataTable id="table" value="#{tipoQuestaoBean.model}" var="t" lazy="true" rows="5"
-			paginator="true" selectionMode="single">
+			paginator="true" selectionMode="single" rowKey="#{t.id}">
 			
 			<p:ajax event="rowSelect" listener="#{tipoQuestaoBean.onRowSelect}" update="form" oncomplete="PF('tipoQuestaoDialog').show()"/>
 			
