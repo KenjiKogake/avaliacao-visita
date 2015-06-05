@@ -1,9 +1,11 @@
 package br.com.visitas.modelo.questionario;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import java.util.List;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import br.com.visitas.modelo.DefaultEntity;
 
@@ -11,14 +13,13 @@ import br.com.visitas.modelo.DefaultEntity;
 public class Questao extends DefaultEntity{
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty
 	private String questao;
 	
 	@ManyToOne(optional=false)
 	private TipoQuestao tipo = new TipoQuestao();
 
-//	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
-//	private List<QuestoesDaAvaliacao> avaliacoes;
+	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
+	private List<QuestoesDaAvaliacao> avaliacoes;
 
 	public String getQuestao() {
 		return questao;
@@ -36,12 +37,12 @@ public class Questao extends DefaultEntity{
 		this.tipo = tipo;
 	}
 
-//	public List<QuestoesDaAvaliacao> getAvaliacoes() {
-//		return avaliacoes;
-//	}
+	public List<QuestoesDaAvaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
 
-//	public void setAvaliacoes(List<QuestoesDaAvaliacao> avaliacoes) {
-//		this.avaliacoes = avaliacoes;
-//	}
+	public void setAvaliacoes(List<QuestoesDaAvaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
 	
 }

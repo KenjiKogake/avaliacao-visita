@@ -66,8 +66,9 @@ public class LazyList<T> implements Serializable {
 
 		if(filtrosAdicionais != null && !filtrosAdicionais.isEmpty()){
 			for (Entry<String, Object> pair : filtrosAdicionais.entrySet()) {
+				if(pair.getValue() != null)
 					criteria.createCriteria(pair.getKey())
-					.add(Example.create(pair.getValue()));
+						.add(Example.create(pair.getValue()));
 			}
 		}
 		
