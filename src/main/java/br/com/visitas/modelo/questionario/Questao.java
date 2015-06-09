@@ -15,6 +15,8 @@ public class Questao extends DefaultEntity{
 
 	private String questao;
 	
+	private boolean status;
+	
 	@ManyToOne(optional=false)
 	private TipoQuestao tipo = new TipoQuestao();
 
@@ -44,5 +46,12 @@ public class Questao extends DefaultEntity{
 	public void setAvaliacoes(List<QuestoesDaAvaliacao> avaliacoes) {
 		this.avaliacoes = avaliacoes;
 	}
-	
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 }

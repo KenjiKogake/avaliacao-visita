@@ -30,7 +30,7 @@
 	<h:form id="formLista">
 	
 		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5"
-			paginator="true" selectionMode="single" rowKey="#{q.id}">
+			paginator="true" selectionMode="single" rowKey="#{q.id}" rowsPerPageTemplate="10, 20, 30">
 			
 			<p:ajax event="rowSelect" listener="#{questaoBean.onRowSelect}" oncomplete="PF('questaoDialog').show()" update="form"/>
 			

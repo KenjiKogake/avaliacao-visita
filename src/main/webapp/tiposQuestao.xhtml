@@ -10,7 +10,7 @@
 	<ui:define name="titulo">
 	</ui:define>
 	<ui:define name="conteudo">
-	<p:commandButton value="Novo" onclick="PF('tipoQuestaoDialog').show()"/>
+	<p:commandButton value="Novo" onclick="PF('tipoQuestaoDialog').show()" update="tabView"/>
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
 			<p:inputText value="#{tipoQuestaoBean.filtroTipoQuestao.tipo}" placeholder="Filtro por Tipo">
@@ -25,7 +25,7 @@
 		<p:dataTable id="table" value="#{tipoQuestaoBean.model}" var="t" lazy="true" rows="5"
 			paginator="true" selectionMode="single" rowKey="#{t.id}">
 			
-			<p:ajax event="rowSelect" listener="#{tipoQuestaoBean.onRowSelect}" update="form" oncomplete="PF('tipoQuestaoDialog').show()"/>
+			<p:ajax event="rowSelect" listener="#{tipoQuestaoBean.onRowSelect}" update="tabView" oncomplete="PF('tipoQuestaoDialog').show()"/>
 			
 			<p:column headerText="Id" sortBy="#{t.id}" filterBy="#{t.id}">
 				<h:outputText value="#{t.id}"/>
@@ -41,19 +41,35 @@
 	
 	<p:dialog header="Cadastro de Tipo de Questão" widgetVar="tipoQuestaoDialog" resizable="false" 
 		modal="true" draggable="false" closeOnEscape="true">
-		<h:form id="form">
-		<h:inputHidden id="id" value="#{tipoQuestaoBean.tipoQuestao.id}"/>
-			<h:panelGrid columns="2" id="tipoQuestaoPanelGrid">
-				<h:outputLabel for="tipo" value="Tipo de Questão"/>
-				<p:inputText id="tipo" value="#{tipoQuestaoBean.tipoQuestao.tipo}"/>
-				
-				<h:outputLabel for="descricao" value="Descrição"/>
-				<p:inputText id="descricao" value="#{tipoQuestaoBean.tipoQuestao.descricao}"/>
-				
-				<p:commandButton value="Gravar" actionListener="#{tipoQuestaoBean.salvar}" update=":form :formLista"
-					process="@form" oncomplete="PF('tipoQuestaoDialog').hide()"/>
-			</h:panelGrid>
-		</h:form>
+		<p:tabView dynamic="true" id="tabView">
+		<p:ajax event="tabChange" listener="#{tipoQuestaoBean.onTabChange}" update="tabView"/>
+		<p:tab title="Cadastro">
+			<h:form id="form">
+			<h:inputHidden id="id" value="#{tipoQuestaoBean.tipoQuestao.id}"/>
+				<h:panelGrid columns="2" id="tipoQuestaoPanelGrid">
+					<h:outputLabel for="tipo" value="Tipo de Questão"/>
+					<p:inputText id="tipo" value="#{tipoQuestaoBean.tipoQuestao.tipo}"/>
+					
+					<h:outputLabel for="descricao" value="Descrição"/>
+					<p:inputText id="descricao" value="#{tipoQuestaoBean.tipoQuestao.descricao}"/>
+					
+					<p:commandButton value="Gravar" actionListener="#{tipoQuestaoBean.salvar}" update="@form :formLista"
+						process="@form" oncomplete="PF('tipoQuestaoDialog').hide()"/>
+				</h:panelGrid>
+			</h:form>
+		</p:tab>
+		<p:tab title="Questões" rendered="#{!tipoQuestaoBean.novo}" id="tabLista">
+			<p:dataTable id="table" value="#{tipoQuestaoBean.modelQuestao}" var="q" lazy="true" rows="5"
+				paginator="true" selectionMode="single" rowKey="#{q.id}">
+				<p:column headerText="Id" sortBy="#{q.id}" filterBy="#{q.id}" filterFunction="exact">
+					<h:outputText value="#{q.id}"/>
+				</p:column>	
+				<p:column headerText="Questão" sortBy="#{q.questao}">
+					<h:outputText value="#{q.questao}"/>
+				</p:column>	
+			</p:dataTable>
+		</p:tab>		
+		</p:tabView>
 	</p:dialog>
 	
 	</ui:define>

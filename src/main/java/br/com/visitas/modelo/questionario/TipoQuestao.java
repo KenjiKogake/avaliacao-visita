@@ -19,6 +19,8 @@ public class TipoQuestao extends DefaultEntity{
 	
 	@NotEmpty
 	private String descricao;
+	
+	private boolean status;
 
 	@OneToMany(mappedBy = "tipo", fetch = FetchType.LAZY)
 	private List<Questao> questoes;
@@ -47,6 +49,14 @@ public class TipoQuestao extends DefaultEntity{
 		this.questoes = questoes;
 	}
 	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	@Override
 	public String toString() {
 		return this.getTipo();
