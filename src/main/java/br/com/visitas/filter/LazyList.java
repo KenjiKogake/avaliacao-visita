@@ -62,7 +62,7 @@ public class LazyList<T> implements Serializable {
 				.ignoreCase()
 				.excludeZeroes();
 		
-		 criteria.add(example);
+		criteria.add(example);
 
 		if(filtrosAdicionais != null && !filtrosAdicionais.isEmpty()){
 			for (Entry<String, Object> pair : filtrosAdicionais.entrySet()) {

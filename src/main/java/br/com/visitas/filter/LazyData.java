@@ -3,6 +3,7 @@ package br.com.visitas.filter;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SelectableDataModel;
@@ -14,17 +15,13 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 	private static final long serialVersionUID = 1L;
 
 	private Object exampleFilter;
-
 	private LazyList<T> lista;
-
 	private FilterTable filtro;
-
 	private DAO<T> dao;
-
 	private Map<String, Object> filtrosAdicionais;
 
-	public LazyData(DAO<T> dao, LazyList<T> lista, Object exampleFilter, Map<String, Object> map) {
-		this.filtrosAdicionais = map;
+	public LazyData(DAO<T> dao, LazyList<T> lista, Object exampleFilter, Map<String, Object> filtrosAdicionais) {
+		this.filtrosAdicionais = filtrosAdicionais;
 		this.dao = dao;
 		this.exampleFilter = exampleFilter;
 		this.lista = lista;
@@ -58,7 +55,7 @@ public class LazyData<T> extends LazyDataModel<T> implements SelectableDataModel
 		}
 		
 		setRowCount(lista.quantidadeFiltrados(id, filtro, exampleFilter, filtrosAdicionais));
-		
+
 		return lista.filtrados(id, filtro, exampleFilter, filtrosAdicionais);
 	}
 	

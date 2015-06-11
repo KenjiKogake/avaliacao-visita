@@ -24,8 +24,14 @@
 				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue="#{null}"/>
 				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}" itemValue="#{t}"/>
 			</p:selectOneMenu>
+			
+			<p:selectOneMenu id="filtroStatus" value="#{questaoBean.filtroQuestao.status}" style="width:125px">
+				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+	        </p:selectOneMenu>
 		</h:panelGrid>
-		<p:commandButton action="#{questaoBean.atualizaTabela}" value="Filtrar" update="formLista"/>
 	</h:form>
 	<h:form id="formLista">
 	
@@ -42,6 +48,9 @@
 			</p:column>
 			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo}">
 				<h:outputText value="#{q.tipo.tipo}"/>
+			</p:column>
+			<p:column headerText="Status" sortBy="#{q.status}">
+				<h:outputText value="#{q.status}"/>
 			</p:column>
 		</p:dataTable>
 	</h:form>

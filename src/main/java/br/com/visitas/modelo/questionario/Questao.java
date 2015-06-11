@@ -3,11 +3,21 @@ package br.com.visitas.modelo.questionario;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
+import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.DefaultEntity;
+
+@NamedQueries({
+	@NamedQuery(name="desativaPorTipoQuestao", query="UPDATE Questao q SET q.status = :pStatus WHERE q.tipo.id = :pId")
+})
 
 @Entity
 public class Questao extends DefaultEntity{
@@ -15,7 +25,8 @@ public class Questao extends DefaultEntity{
 
 	private String questao;
 	
-	private boolean status;
+	@Enumerated(EnumType.ORDINAL)
+	private Status status = Status.Ativo;
 	
 	@ManyToOne(optional=false)
 	private TipoQuestao tipo = new TipoQuestao();
@@ -47,11 +58,11 @@ public class Questao extends DefaultEntity{
 		this.avaliacoes = avaliacoes;
 	}
 
-	public boolean isStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 }

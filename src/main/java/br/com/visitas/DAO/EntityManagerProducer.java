@@ -11,7 +11,7 @@ import javax.persistence.Persistence;
 @ApplicationScoped
 public class EntityManagerProducer {
 
-	private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("test");
+	private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("visitas-pu");
 	
 	@Produces 
 	@RequestScoped

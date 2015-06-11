@@ -10,7 +10,7 @@
 	<ui:define name="titulo">
 	</ui:define>
 	<ui:define name="conteudo">
-	<p:commandButton value="Novo" onclick="PF('tipoQuestaoDialog').show()" update="tabView"/>
+	<p:commandButton value="Novo" action="#{tipoQuestaoBean.novoTipoQuestao}" oncomplete="PF('tipoQuestaoDialog').show()" update="tabView"/>
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
 			<p:inputText value="#{tipoQuestaoBean.filtroTipoQuestao.tipo}" placeholder="Filtro por Tipo">
@@ -19,6 +19,12 @@
 			<p:inputText value="#{tipoQuestaoBean.filtroTipoQuestao.descricao}" placeholder="Filtro por Descrição">
 				<p:ajax update="formLista"/>
 			</p:inputText>
+			<p:selectOneMenu id="filtroStatus" value="#{tipoQuestaoBean.filtroTipoQuestao.status}" style="width:125px">
+				<p:ajax listener="#{tipoQuestaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+	        </p:selectOneMenu>
 		</h:panelGrid>
 	</h:form>
 	<h:form id="formLista">
@@ -35,6 +41,9 @@
 			</p:column>
 			<p:column headerText="Descrição" sortBy="#{t.descricao}">
 				<h:outputText value="#{t.descricao}"/>
+			</p:column>
+			<p:column headerText="Status" sortBy="#{t.status}">
+				<h:outputText value="#{t.status}"/>			
 			</p:column>
 		</p:dataTable>
 	</h:form>
@@ -55,18 +64,47 @@
 					
 					<p:commandButton value="Gravar" actionListener="#{tipoQuestaoBean.salvar}" update="@form :formLista"
 						process="@form" oncomplete="PF('tipoQuestaoDialog').hide()"/>
+						
+					<p:commandButton value="Desativar" actionListener="#{tipoQuestaoBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('tipoQuestaoDialog').hide()" rendered="#{tipoQuestaoBean.ativo}">
+						<p:confirm header="Confirmar" message="As questões pertencentes a este tipo, também serão desativadas. Confirma?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:commandButton value="Reativar" actionListener="#{tipoQuestaoBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('tipoQuestaoDialog').hide()" rendered="#{!tipoQuestaoBean.ativo and !tipoQuestaoBean.novo}"/>
+					
+					<p:confirmDialog global="true" showEffect="fade">
+				        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
 				</h:panelGrid>
 			</h:form>
 		</p:tab>
 		<p:tab title="Questões" rendered="#{!tipoQuestaoBean.novo}" id="tabLista">
+			<h:form id="formFiltroQuestao">
+				<p:selectOneButton value="#{tipoQuestaoBean.filtroQuestao.status}">
+					<p:ajax listener="#{tipoQuestaoBean.aplicaFiltroOneButton}" event="change" update=":tabView:table"/>
+		            <f:selectItem itemLabel="Todos" itemValue="#{null}" />
+		            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+		            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+		        </p:selectOneButton>
+			</h:form>
+			
 			<p:dataTable id="table" value="#{tipoQuestaoBean.modelQuestao}" var="q" lazy="true" rows="5"
 				paginator="true" selectionMode="single" rowKey="#{q.id}">
-				<p:column headerText="Id" sortBy="#{q.id}" filterBy="#{q.id}" filterFunction="exact">
+				
+				
+				<p:column headerText="Id" sortBy="#{q.id}">
 					<h:outputText value="#{q.id}"/>
 				</p:column>	
+				
 				<p:column headerText="Questão" sortBy="#{q.questao}">
 					<h:outputText value="#{q.questao}"/>
 				</p:column>	
+				
+				<p:column headerText="Status" sortBy="#{q.status}">
+					<h:outputText value="#{q.status}"/>
+				</p:column>
 			</p:dataTable>
 		</p:tab>		
 		</p:tabView>

@@ -48,6 +48,8 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public void atualizaTabela(){
+		//Defino o status do tipo como nulo para as questoes ñ serem filtradas por tipos de questao ativos
+		filtroQuestao.getTipo().setStatus(null);
 		filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
 		
 		model = new LazyData<Questao>(dao, imoveis, filtroQuestao, filtrosAdicionais);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.hibernate.Criteria;
@@ -12,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
+import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.imovel.Imovel;
 
 public class DAO<T> implements Serializable{
@@ -102,6 +104,23 @@ public class DAO<T> implements Serializable{
 			criteria.add(Restrictions.ilike("descricao", filtro, MatchMode.ANYWHERE));
 		}
 		return criteria.list();
+	}
+	
+	public void queryById(String namedQuery, long id, Status status){
+		try {
+			em.getTransaction().begin();
+			
+			Query query = em.createNamedQuery(namedQuery)
+					.setParameter("pId", id);
+
+			if(status != null) query.setParameter("pStatus", status);
+			
+			query.executeUpdate();
+			
+			em.getTransaction().commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
