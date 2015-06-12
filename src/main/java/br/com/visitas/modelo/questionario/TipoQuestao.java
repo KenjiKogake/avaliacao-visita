@@ -16,7 +16,8 @@ import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.DefaultEntity;
 
 @NamedQueries({
-	@NamedQuery(name="alteraStatusTipoQuestao", query="UPDATE TipoQuestao t SET t.status = :pStatus WHERE t.id = :pId")
+	@NamedQuery(name="alteraStatusTipoQuestao", query="UPDATE TipoQuestao t SET t.status = :pStatus WHERE t.id = :pId"),
+	@NamedQuery(name="tiposQuestaoAtivos", query="SELECT t FROM TipoQuestao t WHERE t.status = 1")
 })
 
 @Entity

@@ -100,7 +100,7 @@ public class TipoQuestaoBean implements Serializable {
 			else 
 				dao.atualiza(tipoQuestao);
 			
-			novoTipoQuestao();
+			criaNovoTipoQuestao();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -138,9 +138,7 @@ public class TipoQuestaoBean implements Serializable {
 		}
 	}
 	
-	public void novoTipoQuestao(){
-		System.out.println("Novo Tipo Questao");
-		
+	public void criaNovoTipoQuestao(){
 		this.tipoQuestao = new TipoQuestao();
 	}
 	

@@ -10,7 +10,7 @@
 	<ui:define name="titulo">
 	</ui:define>
 	<ui:define name="conteudo">
-	<p:commandButton value="Novo" action="#{tipoQuestaoBean.novoTipoQuestao}" oncomplete="PF('tipoQuestaoDialog').show()" update="tabView"/>
+	<p:commandButton value="Novo" action="#{tipoQuestaoBean.criaNovoTipoQuestao}" oncomplete="PF('tipoQuestaoDialog').show()" update="tabView" process="@this"/>
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
 			<p:inputText value="#{tipoQuestaoBean.filtroTipoQuestao.tipo}" placeholder="Filtro por Tipo">

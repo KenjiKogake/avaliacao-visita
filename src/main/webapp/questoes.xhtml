@@ -10,7 +10,7 @@
 	<ui:define name="titulo">
 	</ui:define>
 	<ui:define name="conteudo">
-	<p:commandButton value="Novo" onclick="PF('questaoDialog').show()"/>
+	<p:commandButton value="Novo" actionListener="#{questaoBean.criaNovaQuestao}" onclick="PF('questaoDialog').show()" process="@this" update=":form"/>
 	
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
@@ -21,7 +21,7 @@
 			
 			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter">
 				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
-				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue="#{null}"/>
+				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
 				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}" itemValue="#{t}"/>
 			</p:selectOneMenu>
 			
@@ -66,7 +66,7 @@
 				
 				<h:outputLabel for="tipo" value="Tipo de Questão"/>
 				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" converter="entityConverter">
-					<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}"/>
+					<f:selectItems value="#{questaoBean.tiposQuestaoAtivos}" var="t" itemLabel="#{t.tipo}"/>
 				</p:selectOneMenu>
 				
 				<p:commandButton value="Gravar" actionListener="#{questaoBean.salvar}" update=":form :formLista"

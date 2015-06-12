@@ -8,13 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
-
 import br.com.visitas.ENUM.Status;
-import br.com.visitas.modelo.imovel.Imovel;
 
 public class DAO<T> implements Serializable{
 
@@ -94,18 +88,6 @@ public class DAO<T> implements Serializable{
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Imovel> listaFiltrada(String filtro){
-		Session session = em.unwrap(Session.class);
-		
-		Criteria criteria = session.createCriteria(classe);
-		
-		if(!filtro.isEmpty()){
-			criteria.add(Restrictions.ilike("descricao", filtro, MatchMode.ANYWHERE));
-		}
-		return criteria.list();
-	}
-	
 	public void queryById(String namedQuery, long id, Status status){
 		try {
 			em.getTransaction().begin();
@@ -121,6 +103,19 @@ public class DAO<T> implements Serializable{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<T> listaNamedQuery(String namedQuery){
+		List<T> lista = new ArrayList<T>();
+		try {
+			lista = em.createNamedQuery(namedQuery, classe)
+				.getResultList();
+			
+			return lista;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
 	}
 	
 }

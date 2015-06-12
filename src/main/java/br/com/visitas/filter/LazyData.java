@@ -3,7 +3,6 @@ package br.com.visitas.filter;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SelectableDataModel;

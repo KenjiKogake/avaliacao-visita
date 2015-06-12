@@ -50,6 +50,7 @@ public class QuestaoBean implements Serializable {
 	public void atualizaTabela(){
 		//Defino o status do tipo como nulo para as questoes ñ serem filtradas por tipos de questao ativos
 		filtroQuestao.getTipo().setStatus(null);
+		
 		filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
 		
 		model = new LazyData<Questao>(dao, imoveis, filtroQuestao, filtrosAdicionais);
@@ -62,7 +63,7 @@ public class QuestaoBean implements Serializable {
 			}else{
 				dao.atualiza(questao);
 			}
-			questao = new Questao();
+			criaNovaQuestao();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,6 +71,10 @@ public class QuestaoBean implements Serializable {
 
 	public List<TipoQuestao> getTiposQuestao() {
 		return daoTipo.listaTodos();
+	}
+	
+	public List<TipoQuestao> getTiposQuestaoAtivos(){
+		return daoTipo.listaNamedQuery("tiposQuestaoAtivos");
 	}
 
 	public Questao getQuestao() {
@@ -97,6 +102,11 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public void aplicaFiltroOneMenu(AjaxBehaviorEvent event){
+		if(filtroQuestao.getTipo() == null) filtroQuestao.setTipo(new TipoQuestao());  
 		atualizaTabela();
+	}
+	
+	public void criaNovaQuestao(){
+		this.questao = new Questao();
 	}
 }
