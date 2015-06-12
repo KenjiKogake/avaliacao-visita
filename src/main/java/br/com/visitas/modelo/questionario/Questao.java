@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import br.com.visitas.ENUM.Opcional;
 import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.DefaultEntity;
 
@@ -27,6 +28,9 @@ public class Questao extends DefaultEntity{
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Status status = Status.Ativo;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private Opcional opcional;
 	
 	@ManyToOne(optional=false)
 	private TipoQuestao tipo = new TipoQuestao();
@@ -65,4 +69,13 @@ public class Questao extends DefaultEntity{
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+	
+	public Opcional getOpcional() {
+		return opcional;
+	}
+	
+	public void setOpcional(Opcional opcional) {
+		this.opcional = opcional;
+	}
+	
 }

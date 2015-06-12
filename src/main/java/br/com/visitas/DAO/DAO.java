@@ -35,7 +35,7 @@ public class DAO<T> implements Serializable{
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	public void remove(T t) throws Exception{

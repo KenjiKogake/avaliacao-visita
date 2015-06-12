@@ -20,17 +20,24 @@
 			</p:inputText>
 			
 			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter">
-				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+				<p:ajax listener="#{questaoBean.aplicaFiltro}" event="change" update="formLista:table"/>
 				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
 				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}" itemValue="#{t}"/>
 			</p:selectOneMenu>
 			
 			<p:selectOneMenu id="filtroStatus" value="#{questaoBean.filtroQuestao.status}" style="width:125px">
-				<p:ajax listener="#{questaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+				<p:ajax listener="#{questaoBean.aplicaFiltro}" event="change" update="formLista:table"/>
 	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
 	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
 	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
 	        </p:selectOneMenu>
+	        
+	        <p:selectOneButton id="opcional" value="#{questaoBean.filtroQuestao.opcional}" >
+				<p:ajax listener="#{questaoBean.aplicaFiltro}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Todos" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Opcionais" itemValue="Sim" />
+	        </p:selectOneButton>
+	        
 		</h:panelGrid>
 	</h:form>
 	<h:form id="formLista">
@@ -52,25 +59,35 @@
 			<p:column headerText="Status" sortBy="#{q.status}">
 				<h:outputText value="#{q.status}"/>
 			</p:column>
+			<p:column headerText="Opcional" sortBy="#{q.opcional}">
+				<h:outputText value="#{q.opcional}"/>
+			</p:column>
 		</p:dataTable>
 	</h:form>
 	
 	<p:dialog header="Cadastro de Questão" widgetVar="questaoDialog" resizable="false" 
 		modal="true" draggable="false" closeOnEscape="true" dynamic="true">
 		<h:form id="form">
+			<p:messages id="msgs" autoUpdate="true"/>
 			<h:inputHidden id="id" value="#{questaoBean.questao.id}"/>
 			<h:panelGrid columns="2" id="questaoPanelGrid">
 			
 				<h:outputLabel for="questao" value="Questão"/>
-				<p:inputText id="questao" value="#{questaoBean.questao.questao}"/>
+				<p:inputText id="questao" value="#{questaoBean.questao.questao}" required="true"/>
 				
 				<h:outputLabel for="tipo" value="Tipo de Questão"/>
-				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" converter="entityConverter">
+				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" converter="entityConverter" required="true">
 					<f:selectItems value="#{questaoBean.tiposQuestaoAtivos}" var="t" itemLabel="#{t.tipo}"/>
 				</p:selectOneMenu>
 				
-				<p:commandButton value="Gravar" actionListener="#{questaoBean.salvar}" update=":form :formLista"
-					process="@form" oncomplete="PF('questaoDialog').hide()" icon="ui-icon-check"/>
+				<h:outputLabel for="opcional" value="Opcional" />
+		        <p:selectOneButton id="opcional" value="#{questaoBean.questao.opcional}" required="true">
+		            <f:selectItem itemLabel="Não" itemValue="Não" />
+		            <f:selectItem itemLabel="Sim" itemValue="Sim" />
+		        </p:selectOneButton>
+				
+				<p:commandButton value="Gravar" action="#{questaoBean.salvar}" update=":form :formLista"
+					process="@form" icon="ui-icon-check"/>
 			</h:panelGrid>
 		</h:form>
 	</p:dialog>

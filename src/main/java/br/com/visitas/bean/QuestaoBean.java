@@ -63,7 +63,6 @@ public class QuestaoBean implements Serializable {
 			}else{
 				dao.atualiza(questao);
 			}
-			criaNovaQuestao();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -101,7 +100,7 @@ public class QuestaoBean implements Serializable {
 		this.filtroQuestao = filtroQuestao;
 	}
 	
-	public void aplicaFiltroOneMenu(AjaxBehaviorEvent event){
+	public void aplicaFiltro(AjaxBehaviorEvent event){
 		if(filtroQuestao.getTipo() == null) filtroQuestao.setTipo(new TipoQuestao());  
 		atualizaTabela();
 	}
