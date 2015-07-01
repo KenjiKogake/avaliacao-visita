@@ -10,7 +10,6 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.DefaultEntity;
@@ -24,10 +23,8 @@ import br.com.visitas.modelo.DefaultEntity;
 public class TipoQuestao extends DefaultEntity{
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty 
 	private String tipo;
 	
-	@NotEmpty
 	private String descricao;
 	
 	@Enumerated(EnumType.ORDINAL)
