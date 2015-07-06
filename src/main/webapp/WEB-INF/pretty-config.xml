@@ -13,4 +13,9 @@
 		<view-id value="/questoes.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="imovel">
+		<pattern value="/imoveis"/>
+		<view-id value="/imoveis.xhtml"/>
+	</url-mapping>
+
 </pretty-config>

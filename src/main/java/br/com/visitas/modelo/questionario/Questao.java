@@ -32,6 +32,8 @@ public class Questao extends DefaultEntity{
 	@Enumerated(EnumType.ORDINAL)
 	private Opcional opcional;
 	
+	private Double peso = 0.0;
+	
 	@ManyToOne(optional=false)
 	private TipoQuestao tipo = new TipoQuestao();
 
@@ -76,6 +78,14 @@ public class Questao extends DefaultEntity{
 	
 	public void setOpcional(Opcional opcional) {
 		this.opcional = opcional;
+	}
+
+	public Double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Double peso) {
+		this.peso = peso;
 	}
 	
 }

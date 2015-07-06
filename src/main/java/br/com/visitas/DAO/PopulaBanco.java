@@ -1,7 +1,7 @@
 package br.com.visitas.DAO;
 import javax.persistence.EntityManager;
 
-import br.com.visitas.modelo.Usuario;
+import br.com.visitas.modelo.pessoa.Usuario;
 
 public class PopulaBanco {
 	public static void main(String[] args) {

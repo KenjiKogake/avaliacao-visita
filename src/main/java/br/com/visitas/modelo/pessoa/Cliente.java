@@ -4,27 +4,16 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import br.com.visitas.modelo.questionario.Avaliacao;
 
 @Entity
-public class Cliente extends Pessoa {
-	/* Este campo deve ser definido com Primary */
-	@Id
-	private long codigo;
-
+public class Cliente extends Usuario {
+	private static final long serialVersionUID = 1L;
+	
 	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
 	private List<Avaliacao> avaliacoes;
-
-	public long getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(long codigo) {
-		this.codigo = codigo;
-	}
 
 	public List<Avaliacao> getAvaliacoes() {
 		// Precisa implementar consulta LAZY

@@ -62,6 +62,9 @@
 			<p:column headerText="Opcional" sortBy="#{q.opcional}">
 				<h:outputText value="#{q.opcional}"/>
 			</p:column>
+			<p:column headerText="Peso" sortBy="#{q.peso}">
+				<h:outputText value="#{q.peso}"/>
+			</p:column>
 		</p:dataTable>
 	</h:form>
 	
@@ -85,6 +88,9 @@
 		            <f:selectItem itemLabel="Não" itemValue="Não" />
 		            <f:selectItem itemLabel="Sim" itemValue="Sim" />
 		        </p:selectOneButton>
+		        
+		        <h:outputLabel for="peso" value="Peso"/>
+        		<p:spinner id="peso" value="#{questaoBean.questao.peso}" stepFactor="0.5" min="-20" max="20"/>
 				
 				<p:commandButton value="Gravar" action="#{questaoBean.salvar}" update=":form :formLista"
 					process="@form" icon="ui-icon-check"/>
