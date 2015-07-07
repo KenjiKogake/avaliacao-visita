@@ -1,8 +1,6 @@
 package br.com.visitas.modelo.questionario;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,7 +15,6 @@ import br.com.visitas.modelo.pessoa.Funcionario;
 
 @Entity
 public class Avaliacao{
-	//	Não precisamos de código da avaliação, uma visita pode ter apenas uma avaliação, portanto será PK
 	@Id
 	private long id;
 
@@ -31,20 +28,13 @@ public class Avaliacao{
 	private Funcionario corretor;
 	
 	private double valorAtual;
-	private double valorSugerido;
 	
-	private Date dataVisita;
+	private double valorSugerido;
 	
 	private String observacoes;
 	
-	private SimpleDateFormat formatDate;
-	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="avaliacao")
 	private List<QuestoesDaAvaliacao> questoes = new ArrayList<QuestoesDaAvaliacao>();
-	
-	public Avaliacao() {
-		formatDate = new SimpleDateFormat("dd/MM/yyyy");
-	}
 
 	public double getValorAtual() {
 		return valorAtual;
@@ -68,14 +58,6 @@ public class Avaliacao{
 
 	public void setImovel(Imovel imovel) {
 		this.imovel = imovel;
-	}
-
-	public String getDataVisita() {
-		return formatDate.format(dataVisita);
-	}
-
-	public void setDataVisita(Date dataVisita) {
-		this.dataVisita = dataVisita;
 	}
 
 	public long getId() {

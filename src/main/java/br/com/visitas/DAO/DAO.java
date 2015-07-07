@@ -88,6 +88,21 @@ public class DAO<T> implements Serializable{
 		return null;
 	}
 	
+	public void queryById(String namedQuery, long id){
+		try {
+			em.getTransaction().begin();
+			
+			Query query = em.createNamedQuery(namedQuery)
+					.setParameter("pId", id);
+
+			query.executeUpdate();
+			
+			em.getTransaction().commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void queryById(String namedQuery, long id, Status status){
 		try {
 			em.getTransaction().begin();

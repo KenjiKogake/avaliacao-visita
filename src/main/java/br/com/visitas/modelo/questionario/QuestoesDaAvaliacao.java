@@ -4,12 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-
-import br.com.visitas.ENUM.NotaAvaliacao;
 
 @Entity
 public class QuestoesDaAvaliacao implements Serializable {
@@ -18,16 +14,14 @@ public class QuestoesDaAvaliacao implements Serializable {
 	@EmbeddedId
 	private QuestoesDaAvaliacaoId id = new QuestoesDaAvaliacaoId();
 
-	@Enumerated(EnumType.ORDINAL)
-	private NotaAvaliacao nota;
+	@ManyToOne(optional=false)
+	private Nota nota = new Nota();
 
-	private boolean importa = false;
-
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@MapsId("questao_id")
 	private Questao questao;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@MapsId("avaliacao_id")
 	private Avaliacao avaliacao;
 	
@@ -55,20 +49,12 @@ public class QuestoesDaAvaliacao implements Serializable {
 		this.id = id;
 	}
 
-	public NotaAvaliacao getNota() {
+	public Nota getNota() {
 		return nota;
 	}
 
-	public void setNota(NotaAvaliacao nota) {
+	public void setNota(Nota nota) {
 		this.nota = nota;
-	}
-
-	public boolean isImporta() {
-		return importa;
-	}
-
-	public void setImporta(boolean importa) {
-		this.importa = importa;
 	}
 
 	@Override

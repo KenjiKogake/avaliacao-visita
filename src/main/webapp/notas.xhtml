@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	<p:commandButton value="Novo" action="#{notaBean.criaNovaNota}" oncomplete="PF('notaDialog').show()" update="form" process="@this"/>
+	<h:form id="formFiltro">
+		<h:panelGrid columns="1">
+			<p:inputText value="#{notaBean.filtroNota.nota}" placeholder="Filtro por Nota">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{notaBean.filtroNota.valor}" placeholder="Filtro por Valor">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:selectOneMenu id="filtroStatus" value="#{notaBean.filtroNota.status}" style="width:125px">
+				<p:ajax listener="#{notaBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+	        </p:selectOneMenu>
+		</h:panelGrid>
+	</h:form>
+	<h:form id="formLista">
+		<p:dataTable id="table" value="#{notaBean.model}" var="n" lazy="true" rows="5"
+			paginator="true" selectionMode="single" rowKey="#{n.id}">
+			
+			<p:ajax event="rowSelect" listener="#{notaBean.onRowSelect}" update="form" oncomplete="PF('notaDialog').show()"/>
+			
+			<p:column headerText="Id" sortBy="#{n.id}" filterBy="#{n.id}">
+				<h:outputText value="#{n.id}"/>
+			</p:column>
+			<p:column headerText="Nota" sortBy="#{n.nota}">
+				<h:outputText value="#{n.nota}"/>
+			</p:column>
+			<p:column headerText="Valor" sortBy="#{n.valor}">
+				<h:outputText value="#{n.valor}"/>
+			</p:column>
+			<p:column headerText="Status" sortBy="#{n.status}">
+				<h:outputText value="#{n.status}"/>			
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<p:dialog header="Cadastro de Nota" widgetVar="notaDialog" resizable="false" 
+		modal="true" draggable="false" closeOnEscape="true">
+			<h:form id="form">
+			<p:messages id="msgs"/>
+			<h:inputHidden id="id" value="#{notaBean.nota.id}"/>
+				<h:panelGrid columns="2" id="notaPanelGrid">
+					<h:outputLabel for="nota" value="Nota"/>
+					<p:inputText id="nota" value="#{notaBean.nota.nota}"/>
+					
+					<h:outputLabel for="valor" value="Valor"/>
+					<p:inputText id="valor" value="#{notaBean.nota.valor}"/>
+					
+					<p:commandButton value="Gravar" actionListener="#{notaBean.salvar}" update="@form :formLista"
+						process="@form"/>
+						
+					<p:commandButton value="Desativar" actionListener="#{notaBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('notaDialog').hide()" rendered="#{notaBean.ativo}">
+						<p:confirm header="Confirmar" message="Deseja desativar esta Nota?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:commandButton value="Reativar" actionListener="#{notaBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('notaDialog').hide()" rendered="#{!notaBean.ativo and !notaBean.novo}"/>
+					
+					<p:confirmDialog global="true" showEffect="fade">
+				        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+				</h:panelGrid>
+			</h:form>
+	</p:dialog>
+	
+	</ui:define>
+</ui:composition>
+</html>

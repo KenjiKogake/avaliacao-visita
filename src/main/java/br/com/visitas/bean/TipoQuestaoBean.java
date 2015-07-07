@@ -99,8 +99,6 @@ public class TipoQuestaoBean implements Serializable {
 				dao.adiciona(tipoQuestao);
 			else 
 				dao.atualiza(tipoQuestao);
-			
-			criaNovoTipoQuestao();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

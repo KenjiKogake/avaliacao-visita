@@ -18,4 +18,8 @@
 		<view-id value="/imoveis.xhtml"/>
 	</url-mapping>
 
+	<url-mapping id="nota">
+		<pattern value="/notas"/>
+		<view-id value="/notas.xhtml"/>
+	</url-mapping>
 </pretty-config>
