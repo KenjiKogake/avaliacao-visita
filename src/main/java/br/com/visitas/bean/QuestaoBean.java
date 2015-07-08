@@ -16,8 +16,8 @@ import org.primefaces.event.SelectEvent;
 import br.com.visitas.DAO.DAO;
 import br.com.visitas.filter.LazyData;
 import br.com.visitas.filter.LazyList;
+import br.com.visitas.modelo.questionario.GrupoQuestao;
 import br.com.visitas.modelo.questionario.Questao;
-import br.com.visitas.modelo.questionario.TipoQuestao;
 
 @Named 
 @ManagedBean @ViewScoped
@@ -25,14 +25,14 @@ public class QuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private DAO<Questao> dao;
-	@Inject DAO<TipoQuestao> daoTipo;
+	@Inject DAO<GrupoQuestao> daoGrupo;
 
 	@Inject
 	private Questao questao;
 
 	private Questao filtroQuestao = new Questao();
 	private LazyData<Questao> model;
-	private LazyList<Questao> imoveis;
+	private LazyList<Questao> questoes;
 	private Map<String, Object> filtrosAdicionais = new HashMap<String, Object>();
 	
 	public QuestaoBean() {
@@ -40,20 +40,20 @@ public class QuestaoBean implements Serializable {
 	}
 
 	@Inject
-	public QuestaoBean(DAO<Questao> dao, LazyList<Questao> imoveis) {
+	public QuestaoBean(DAO<Questao> dao, LazyList<Questao> questoes) {
 		this.dao = dao;
-		this.imoveis = imoveis;
+		this.questoes = questoes;
 		
 		atualizaTabela();
 	}
 	
 	public void atualizaTabela(){
 		//Defino o status do tipo como nulo para as questoes ñ serem filtradas por tipos de questao ativos
-		filtroQuestao.getTipo().setStatus(null);
+		filtroQuestao.getGrupo().setStatus(null);
 		
-		filtrosAdicionais.put("tipo", filtroQuestao.getTipo());
+		filtrosAdicionais.put("grupo", filtroQuestao.getGrupo());
 		
-		model = new LazyData<Questao>(dao, imoveis, filtroQuestao, filtrosAdicionais);
+		model = new LazyData<Questao>(dao, questoes, filtroQuestao, filtrosAdicionais);
 	}
 	
 	public void salvar() {
@@ -68,12 +68,12 @@ public class QuestaoBean implements Serializable {
 		}
 	}
 
-	public List<TipoQuestao> getTiposQuestao() {
-		return daoTipo.listaTodos();
+	public List<GrupoQuestao> getGruposQuestao() {
+		return daoGrupo.listaTodos();
 	}
 	
-	public List<TipoQuestao> getTiposQuestaoAtivos(){
-		return daoTipo.listaNamedQuery("tiposQuestaoAtivos");
+	public List<GrupoQuestao> getGruposQuestaoAtivos(){
+		return daoGrupo.listaNamedQuery("gruposQuestaoAtivos");
 	}
 
 	public Questao getQuestao() {
@@ -101,7 +101,7 @@ public class QuestaoBean implements Serializable {
 	}
 	
 	public void aplicaFiltro(AjaxBehaviorEvent event){
-		if(filtroQuestao.getTipo() == null) filtroQuestao.setTipo(new TipoQuestao());  
+		if(filtroQuestao.getGrupo() == null) filtroQuestao.setGrupo(new GrupoQuestao());  
 		atualizaTabela();
 	}
 	

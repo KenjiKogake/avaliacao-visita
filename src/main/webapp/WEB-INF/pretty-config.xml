@@ -3,9 +3,9 @@
   xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
-	<url-mapping id="tipoQuestao">
-		<pattern value="/tipos-de-questao" />
-		<view-id value="/tiposQuestao.xhtml" />
+	<url-mapping id="grupoQuestao">
+		<pattern value="/grupos-de-questao" />
+		<view-id value="/gruposQuestao.xhtml" />
 	</url-mapping>
 	
 	<url-mapping id="questao">
@@ -21,5 +21,10 @@
 	<url-mapping id="nota">
 		<pattern value="/notas"/>
 		<view-id value="/notas.xhtml"/>
+	</url-mapping>
+	
+	<url-mapping id="avaliacao">
+		<pattern value="/avaliacao"/>
+		<view-id value="/avaliacao.xhtml"/>
 	</url-mapping>
 </pretty-config>

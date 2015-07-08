@@ -15,22 +15,22 @@ import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.DefaultEntity;
 
 @NamedQueries({
-	@NamedQuery(name="alteraStatusTipoQuestao", query="UPDATE TipoQuestao t SET t.status = :pStatus WHERE t.id = :pId"),
-	@NamedQuery(name="tiposQuestaoAtivos", query="SELECT t FROM TipoQuestao t WHERE t.status = 1")
+	@NamedQuery(name="alteraStatusGrupoQuestao", query="UPDATE GrupoQuestao g SET g.status = :pStatus WHERE g.id = :pId"),
+	@NamedQuery(name="gruposQuestaoAtivos", query="SELECT g FROM GrupoQuestao g WHERE g.status = 1")
 })
 
 @Entity
-public class TipoQuestao extends DefaultEntity{
+public class GrupoQuestao extends DefaultEntity{
 	private static final long serialVersionUID = 1L;
 
-	private String tipo;
+	private String grupo;
 	
 	private String descricao;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Status status = Status.Ativo;
 
-	@OneToMany(mappedBy = "tipo", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "grupo", fetch = FetchType.LAZY)
 	private List<Questao> questoes;
 
 	public String getDescricao() {
@@ -41,12 +41,12 @@ public class TipoQuestao extends DefaultEntity{
 		this.descricao = descricao;
 	}
 	
-	public String getTipo() {
-		return tipo;
+	public String getGrupo() {
+		return grupo;
 	}
 	
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
 	}
 	
 	public List<Questao> getQuestoes() {
@@ -67,6 +67,6 @@ public class TipoQuestao extends DefaultEntity{
 
 	@Override
 	public String toString() {
-		return this.getTipo();
+		return this.getGrupo();
 	}
 }

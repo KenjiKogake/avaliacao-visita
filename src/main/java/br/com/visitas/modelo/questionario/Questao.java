@@ -17,7 +17,8 @@ import br.com.visitas.ENUM.Status;
 import br.com.visitas.modelo.DefaultEntity;
 
 @NamedQueries({
-	@NamedQuery(name="desativaPorTipoQuestao", query="UPDATE Questao q SET q.status = :pStatus WHERE q.tipo.id = :pId")
+	@NamedQuery(name="desativaPorGrupoQuestao", query="UPDATE Questao q SET q.status = :pStatus WHERE q.grupo.id = :pId"),
+	@NamedQuery(name="questoesAtivas", query="SELECT q FROM Questao q WHERE q.status = 1")
 })
 
 @Entity
@@ -35,7 +36,7 @@ public class Questao extends DefaultEntity{
 	private Double peso = 0.0;
 	
 	@ManyToOne(optional=false)
-	private TipoQuestao tipo = new TipoQuestao();
+	private GrupoQuestao grupo = new GrupoQuestao();
 
 	@OneToMany(mappedBy = "questao", fetch = FetchType.LAZY)
 	private List<QuestoesDaAvaliacao> avaliacoes;
@@ -48,12 +49,12 @@ public class Questao extends DefaultEntity{
 		this.questao = questao;
 	}
 
-	public TipoQuestao getTipo() {
-		return tipo;
+	public GrupoQuestao getGrupo() {
+		return grupo;
 	}
 
-	public void setTipo(TipoQuestao tipo) {
-		this.tipo = tipo;
+	public void setGrupo(GrupoQuestao grupo) {
+		this.grupo = grupo;
 	}
 
 	public List<QuestoesDaAvaliacao> getAvaliacoes() {

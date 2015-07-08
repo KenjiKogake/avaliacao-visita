@@ -15,7 +15,7 @@ public class QuestoesDaAvaliacao implements Serializable {
 	private QuestoesDaAvaliacaoId id = new QuestoesDaAvaliacaoId();
 
 	@ManyToOne(optional=false)
-	private Nota nota = new Nota();
+	private Nota nota;
 
 	@ManyToOne(optional=false)
 	@MapsId("questao_id")
@@ -24,6 +24,16 @@ public class QuestoesDaAvaliacao implements Serializable {
 	@ManyToOne(optional=false)
 	@MapsId("avaliacao_id")
 	private Avaliacao avaliacao;
+	
+	public QuestoesDaAvaliacao(){
+		this(null, null, null);
+	}
+	
+	public QuestoesDaAvaliacao(Avaliacao avaliacao, Questao questao, Nota nota){
+		this.avaliacao = avaliacao;
+		this.questao = questao;
+		this.nota = nota;
+	}
 	
 	public Questao getQuestao() {
 		return questao;
@@ -40,7 +50,7 @@ public class QuestoesDaAvaliacao implements Serializable {
 	public void setAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = avaliacao;
 	}
-
+	
 	public QuestoesDaAvaliacaoId getId() {
 		return id;
 	}

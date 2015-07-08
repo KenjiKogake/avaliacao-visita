@@ -19,10 +19,10 @@
 				<p:ajax update="formLista:table"/>
 			</p:inputText>
 			
-			<p:selectOneMenu id="tipo" value="#{questaoBean.filtroQuestao.tipo}" converter="entityConverter">
+			<p:selectOneMenu id="grupo" value="#{questaoBean.filtroQuestao.grupo}" converter="entityConverter">
 				<p:ajax listener="#{questaoBean.aplicaFiltro}" event="change" update="formLista:table"/>
-				<f:selectItem itemLabel="Filtro por Tipo de Questão" itemValue=""/>
-				<f:selectItems value="#{questaoBean.tiposQuestao}" var="t" itemLabel="#{t.tipo}" itemValue="#{t}"/>
+				<f:selectItem itemLabel="Filtro por Grupo de Questão" itemValue=""/>
+				<f:selectItems value="#{questaoBean.gruposQuestao}" var="g" itemLabel="#{g.grupo}" itemValue="#{g}"/>
 			</p:selectOneMenu>
 			
 			<p:selectOneMenu id="filtroStatus" value="#{questaoBean.filtroQuestao.status}" style="width:125px">
@@ -53,8 +53,8 @@
 			<p:column headerText="Questão" sortBy="#{q.questao}">
 				<h:outputText value="#{q.questao}"/>
 			</p:column>
-			<p:column headerText="Tipo de Questão" sortBy="#{q.tipo}">
-				<h:outputText value="#{q.tipo.tipo}"/>
+			<p:column headerText="Grupo de Questão" sortBy="#{q.grupo}">
+				<h:outputText value="#{q.grupo.grupo}"/>
 			</p:column>
 			<p:column headerText="Status" sortBy="#{q.status}">
 				<h:outputText value="#{q.status}"/>
@@ -78,9 +78,9 @@
 				<h:outputLabel for="questao" value="Questão"/>
 				<p:inputText id="questao" value="#{questaoBean.questao.questao}" required="true"/>
 				
-				<h:outputLabel for="tipo" value="Tipo de Questão"/>
-				<p:selectOneMenu id="tipo" value="#{questaoBean.questao.tipo}" converter="entityConverter" required="true">
-					<f:selectItems value="#{questaoBean.tiposQuestaoAtivos}" var="t" itemLabel="#{t.tipo}"/>
+				<h:outputLabel for="grupo" value="Grupo de Questão"/>
+				<p:selectOneMenu id="grupo" value="#{questaoBean.questao.grupo}" converter="entityConverter" required="true">
+					<f:selectItems value="#{questaoBean.gruposQuestaoAtivos}" var="g" itemLabel="#{g.grupo}"/>
 				</p:selectOneMenu>
 				
 				<h:outputLabel for="opcional" value="Opcional" />

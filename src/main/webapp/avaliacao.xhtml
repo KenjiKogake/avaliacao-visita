@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	
+	
+	<h:form id="form">
+		<p:messages id="msgs" autoUpdate="true"/>
+		<h:panelGrid columns="2" id="avaliacaoPanelGrid">
+			<h:outputLabel for="id" value="Cód. Visita"/>
+			<p:inputText id="id" value="#{avaliacaoBean.avaliacao.id}"/>
+			
+			<h:outputLabel for="valorAtual" value="Valor Atual"/>
+			<p:inputText id="valorAtual" value="#{avaliacaoBean.avaliacao.valorAtual}"/>
+			
+			<h:outputLabel for="valorSugerido" value="Valor Sugerido"/>
+			<p:inputText id="valorSugerido" value="#{avaliacaoBean.avaliacao.valorSugerido}"/>
+			
+			<h:outputLabel for="observacao" value="Observações"/>
+			<p:inputTextarea id="observacao" value="#{avaliacaoBean.avaliacao.observacoes}" rows="3"/>
+		</h:panelGrid>
+		
+		<p:commandButton value="Iniciar Questionário" actionListener="#{avaliacaoBean.iniciarQuestionario}"
+			process="@form" update="formQuestionario"/>
+	</h:form>
+	<h:form id="formQuestionario">
+		<p:dataScroller value="#{avaliacaoBean.avaliacao.questoes}" var="q" chunkSize="10">
+			<p:panelGrid columns="3">
+				<h:outputLabel value="#{q.questao.questao}"/>
+				
+				<p:selectOneButton id="nota" value="#{q.nota}"  converter="entityConverter">
+					<f:selectItems value="#{avaliacaoBean.notas}" var="n" itemLabel="#{n.nota}"/>
+				</p:selectOneButton>
+			</p:panelGrid>
+		</p:dataScroller>
+		<p:commandButton value="Gravar" actionListener="#{avaliacaoBean.salvar}"
+			process="@all"/>
+	</h:form>
+	
+	</ui:define>
+</ui:composition>
+</html>

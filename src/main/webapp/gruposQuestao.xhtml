@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	<p:commandButton value="Novo" action="#{grupoQuestaoBean.criaNovoGrupoQuestao}" oncomplete="PF('grupoQuestaoDialog').show()" update="tabView" process="@this"/>
+	<h:form id="formFiltro">
+		<h:panelGrid columns="1">
+			<p:inputText value="#{grupoQuestaoBean.filtroGrupoQuestao.grupo}" placeholder="Filtro por Grupo">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{grupoQuestaoBean.filtroGrupoQuestao.descricao}" placeholder="Filtro por Descrição">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:selectOneMenu id="filtroStatus" value="#{grupoQuestaoBean.filtroGrupoQuestao.status}" style="width:125px">
+				<p:ajax listener="#{grupoQuestaoBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+	        </p:selectOneMenu>
+		</h:panelGrid>
+	</h:form>
+	<h:form id="formLista">
+		<p:dataTable id="table" value="#{grupoQuestaoBean.model}" var="g" lazy="true" rows="5"
+			paginator="true" selectionMode="single" rowKey="#{g.id}">
+			
+			<p:ajax event="rowSelect" listener="#{grupoQuestaoBean.onRowSelect}" update="tabView" oncomplete="PF('grupoQuestaoDialog').show()"/>
+			
+			<p:column headerText="Id" sortBy="#{g.id}" filterBy="#{g.id}">
+				<h:outputText value="#{g.id}"/>
+			</p:column>
+			<p:column headerText="Grupo de Questão" sortBy="#{g.grupo}">
+				<h:outputText value="#{g.grupo}"/>
+			</p:column>
+			<p:column headerText="Descrição" sortBy="#{g.descricao}">
+				<h:outputText value="#{g.descricao}"/>
+			</p:column>
+			<p:column headerText="Status" sortBy="#{g.status}">
+				<h:outputText value="#{g.status}"/>			
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<p:dialog header="Cadastro de Grupo de Questão" widgetVar="grupoQuestaoDialog" resizable="false" 
+		modal="true" draggable="false" closeOnEscape="true">
+		<p:tabView dynamic="true" id="tabView">
+		<p:ajax event="tabChange" listener="#{grupoQuestaoBean.onTabChange}" update="tabView"/>
+		<p:tab title="Cadastro">
+			<h:form id="form">
+			<p:messages id="msgs"/>
+			<h:inputHidden id="id" value="#{grupoQuestaoBean.grupoQuestao.id}"/>
+				<h:panelGrid columns="2" id="grupoQuestaoPanelGrid">
+					<h:outputLabel for="grupo" value="Grupo"/>
+					<p:inputText id="grupo" value="#{grupoQuestaoBean.grupoQuestao.grupo}"/>
+					
+					<h:outputLabel for="descricao" value="Descrição"/>
+					<p:inputText id="descricao" value="#{grupoQuestaoBean.grupoQuestao.descricao}"/>
+					
+					<p:commandButton value="Gravar" actionListener="#{grupoQuestaoBean.salvar}" update="@form :formLista"
+						process="@form"/>
+						
+					<p:commandButton value="Desativar" actionListener="#{grupoQuestaoBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('grupoQuestaoDialog').hide()" rendered="#{grupoQuestaoBean.ativo}">
+						<p:confirm header="Confirmar" message="As questões pertencentes a este Grupo, também serão desativadas. Confirma?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:commandButton value="Reativar" actionListener="#{grupoQuestaoBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('grupoQuestaoDialog').hide()" rendered="#{!grupoQuestaoBean.ativo and !grupoQuestaoBean.novo}"/>
+					
+					<p:confirmDialog global="true" showEffect="fade">
+				        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+				</h:panelGrid>
+			</h:form>
+		</p:tab>
+		<p:tab title="Questões" rendered="#{!grupoQuestaoBean.novo}" id="tabLista">
+			<h:form id="formFiltroQuestao">
+				<p:selectOneButton value="#{grupoQuestaoBean.filtroQuestao.status}">
+					<p:ajax listener="#{grupoQuestaoBean.aplicaFiltroOneButton}" event="change" update=":tabView:table"/>
+		            <f:selectItem itemLabel="Todos" itemValue="#{null}" />
+		            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+		            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+		        </p:selectOneButton>
+			</h:form>
+			
+			<p:dataTable id="table" value="#{grupoQuestaoBean.modelQuestao}" var="q" lazy="true" rows="5"
+				paginator="true" selectionMode="single" rowKey="#{q.id}">
+				
+				
+				<p:column headerText="Id" sortBy="#{q.id}">
+					<h:outputText value="#{q.id}"/>
+				</p:column>	
+				
+				<p:column headerText="Questão" sortBy="#{q.questao}">
+					<h:outputText value="#{q.questao}"/>
+				</p:column>	
+				
+				<p:column headerText="Status" sortBy="#{q.status}">
+					<h:outputText value="#{q.status}"/>
+				</p:column>
+			</p:dataTable>
+		</p:tab>		
+		</p:tabView>
+	</p:dialog>
+	
+	</ui:define>
+</ui:composition>
+</html>

@@ -6,6 +6,4 @@ import javax.persistence.Entity;
 public abstract class Funcionario extends Usuario {
 	private static final long serialVersionUID = 1L;
 
-
-	
 }

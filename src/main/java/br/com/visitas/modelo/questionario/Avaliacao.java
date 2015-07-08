@@ -1,5 +1,6 @@
 package br.com.visitas.modelo.questionario;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,11 @@ import br.com.visitas.modelo.pessoa.Cliente;
 import br.com.visitas.modelo.pessoa.Funcionario;
 
 @Entity
-public class Avaliacao{
+public class Avaliacao implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	private long id;
+	private Long id;
 
 	@ManyToOne
 	private Imovel imovel;
@@ -60,11 +63,11 @@ public class Avaliacao{
 		this.imovel = imovel;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -99,5 +102,31 @@ public class Avaliacao{
 	public void setQuestoes(List<QuestoesDaAvaliacao> questoes) {
 		this.questoes = questoes;
 	}
+	
+	public void adicionaQuestao(Questao questao, Nota nota){
+		this.questoes.add(new QuestoesDaAvaliacao(this, questao, nota));
+	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Avaliacao other = (Avaliacao) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
 }

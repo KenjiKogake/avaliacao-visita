@@ -16,60 +16,60 @@ import br.com.visitas.DAO.DAO;
 import br.com.visitas.ENUM.Status;
 import br.com.visitas.filter.LazyData;
 import br.com.visitas.filter.LazyList;
+import br.com.visitas.modelo.questionario.GrupoQuestao;
 import br.com.visitas.modelo.questionario.Questao;
-import br.com.visitas.modelo.questionario.TipoQuestao;
 
 @Named
 @ViewScoped
-public class TipoQuestaoBean implements Serializable {
+public class GrupoQuestaoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private DAO<TipoQuestao> dao;
-	private LazyData<TipoQuestao> model;
-	private LazyList<TipoQuestao> tiposQuestao;
+	private DAO<GrupoQuestao> dao;
+	private LazyData<GrupoQuestao> model;
+	private LazyList<GrupoQuestao> gruposQuestao;
 
-	private TipoQuestao filtroTipoQuestao = new TipoQuestao();
+	private GrupoQuestao filtroGrupoQuestao = new GrupoQuestao();
 	
-	@Inject private TipoQuestao tipoQuestao;
+	@Inject private GrupoQuestao grupoQuestao;
 	
 	@Inject private LazyList<Questao> questoes;
 	private LazyData<Questao> modelQuestao;
 	@Inject private Questao filtroQuestao;
 
-	public TipoQuestaoBean() {
+	public GrupoQuestaoBean() {
 		this(null, null);
 	}
 
 	@Inject
-	public TipoQuestaoBean(DAO<TipoQuestao> dao, LazyList<TipoQuestao> tiposQuestao) {
+	public GrupoQuestaoBean(DAO<GrupoQuestao> dao, LazyList<GrupoQuestao> gruposQuestao) {
 		this.dao = dao;
-		this.tiposQuestao = tiposQuestao;
+		this.gruposQuestao = gruposQuestao;
 		
 		atualizaTabela();
 	}
 
 	public void atualizaTabela(){
-		model = new LazyData<TipoQuestao>(dao, tiposQuestao, filtroTipoQuestao, null);
+		model = new LazyData<GrupoQuestao>(dao, gruposQuestao, filtroGrupoQuestao, null);
 	}
 	
 	@Inject
 	public void buscaListaQuestoes(DAO<Questao> dao){
 		Map<String, Object> filtrosAdicionais = new HashMap<String, Object>();
 		
-		filtrosAdicionais.put("tipo", this.getTipoQuestao());
+		filtrosAdicionais.put("tipo", this.getGrupoQuestao());
 		
 		modelQuestao = new LazyData<Questao>(dao, questoes, filtroQuestao, filtrosAdicionais);
 	}
 
-	public TipoQuestao getTipoQuestao() {
-		return tipoQuestao;
+	public GrupoQuestao getGrupoQuestao() {
+		return grupoQuestao;
 	}
 
-	public void setTipoQuestao(TipoQuestao tipoQuestao) {
-		this.tipoQuestao = tipoQuestao;
+	public void setGrupoQuestao(GrupoQuestao tipoQuestao) {
+		this.grupoQuestao = tipoQuestao;
 	}
 	
-	public LazyData<TipoQuestao> getModel() {
+	public LazyData<GrupoQuestao> getModel() {
 		return model;
 	}
 	
@@ -77,12 +77,12 @@ public class TipoQuestaoBean implements Serializable {
 		return modelQuestao;
 	}
 	
-	public TipoQuestao getFiltroTipoQuestao() {
-		return filtroTipoQuestao;
+	public GrupoQuestao getFiltroGrupoQuestao() {
+		return filtroGrupoQuestao;
 	}
 	
-	public void setFiltroTipoQuestao(TipoQuestao filtroTipoQuestao) {
-		this.filtroTipoQuestao = filtroTipoQuestao;
+	public void setFiltroGrupoQuestao(GrupoQuestao filtroGrupoQuestao) {
+		this.filtroGrupoQuestao = filtroGrupoQuestao;
 	}
 	
 	public Questao getFiltroQuestao() {
@@ -95,10 +95,10 @@ public class TipoQuestaoBean implements Serializable {
 	
 	public void salvar() {
 		try {
-			if(tipoQuestao.getId() == null)
-				dao.adiciona(tipoQuestao);
+			if(grupoQuestao.getId() == null)
+				dao.adiciona(grupoQuestao);
 			else 
-				dao.atualiza(tipoQuestao);
+				dao.atualiza(grupoQuestao);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -106,11 +106,11 @@ public class TipoQuestaoBean implements Serializable {
 	
 	public void alterarStatus(){
 		try {
-			if(tipoQuestao.getStatus() == Status.Ativo){
-				dao.queryById("alteraStatusTipoQuestao", tipoQuestao.getId(), Status.Inativo);
-				dao.queryById("desativaPorTipoQuestao", tipoQuestao.getId(), Status.Inativo);
+			if(grupoQuestao.getStatus() == Status.Ativo){
+				dao.queryById("alteraStatusGrupoQuestao", grupoQuestao.getId(), Status.Inativo);
+				dao.queryById("desativaPorGrupoQuestao", grupoQuestao.getId(), Status.Inativo);
 			}else{
-				dao.queryById("alteraStatusTipoQuestao", tipoQuestao.getId(), Status.Ativo);
+				dao.queryById("alteraStatusGrupoQuestao", grupoQuestao.getId(), Status.Ativo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,15 +118,15 @@ public class TipoQuestaoBean implements Serializable {
 	}
 
 	public void onRowSelect(SelectEvent event){
-		tipoQuestao = (TipoQuestao) event.getObject();
+		grupoQuestao = (GrupoQuestao) event.getObject();
 	}
 	
 	public boolean isNovo(){
-		return this.tipoQuestao.getId() == null;
+		return this.grupoQuestao.getId() == null;
 	}
 	
 	public boolean isAtivo(){
-		if(!isNovo()) return this.tipoQuestao.getStatus() == Status.Ativo;
+		if(!isNovo()) return this.grupoQuestao.getStatus() == Status.Ativo;
 		return false;
 	}
 	
@@ -136,8 +136,8 @@ public class TipoQuestaoBean implements Serializable {
 		}
 	}
 	
-	public void criaNovoTipoQuestao(){
-		this.tipoQuestao = new TipoQuestao();
+	public void criaNovoGrupoQuestao(){
+		this.grupoQuestao = new GrupoQuestao();
 	}
 	
 	public void aplicaFiltroOneMenu(AjaxBehaviorEvent event){
