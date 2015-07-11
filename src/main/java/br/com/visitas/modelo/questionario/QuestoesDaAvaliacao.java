@@ -7,6 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
+@NamedQueries({
+	@NamedQuery(name="listaRespostas", query="SELECT q FROM QuestoesDaAvaliacao q WHERE q.avaliacao = :pId")
+})
+
 @Entity
 public class QuestoesDaAvaliacao implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -14,7 +21,7 @@ public class QuestoesDaAvaliacao implements Serializable {
 	@EmbeddedId
 	private QuestoesDaAvaliacaoId id = new QuestoesDaAvaliacaoId();
 
-	@ManyToOne(optional=false)
+	@ManyToOne
 	private Nota nota;
 
 	@ManyToOne(optional=false)
@@ -27,6 +34,11 @@ public class QuestoesDaAvaliacao implements Serializable {
 	
 	public QuestoesDaAvaliacao(){
 		this(null, null, null);
+	}
+	
+	public QuestoesDaAvaliacao(Avaliacao avaliacao, Questao questao){
+		this.avaliacao = avaliacao;
+		this.questao = questao;
 	}
 	
 	public QuestoesDaAvaliacao(Avaliacao avaliacao, Questao questao, Nota nota){

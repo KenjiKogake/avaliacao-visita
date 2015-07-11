@@ -10,7 +10,8 @@
 	<ui:define name="titulo">
 	</ui:define>
 	<ui:define name="conteudo">
-	<p:commandButton value="Novo" actionListener="#{questaoBean.criaNovaQuestao}" onclick="PF('questaoDialog').show()" process="@this" update=":form"/>
+	<p:commandButton value="Novo" actionListener="#{questaoBean.criaNovaQuestao}" onclick="PF('questaoDialog').show()" 
+		process="@this" update=":form"/>
 	
 	<h:form id="formFiltro">
 		<h:panelGrid columns="1">
@@ -42,7 +43,7 @@
 	</h:form>
 	<h:form id="formLista">
 	
-		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="5"
+		<p:dataTable id="table" value="#{questaoBean.model}" var="q" lazy="true" rows="10"
 			paginator="true" selectionMode="single" rowKey="#{q.id}" rowsPerPageTemplate="10, 20, 30">
 			
 			<p:ajax event="rowSelect" listener="#{questaoBean.onRowSelect}" oncomplete="PF('questaoDialog').show()" update="form"/>

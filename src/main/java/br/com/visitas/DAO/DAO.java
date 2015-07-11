@@ -37,6 +37,23 @@ public class DAO<T> implements Serializable{
 			e.printStackTrace();
 		}
 	}
+	
+	public void adicionaListaDeObjetos(List<T> lista){
+		try {
+			// abre transacao
+			em.getTransaction().begin();
+			
+			for (T obj : lista) {
+				em.persist(obj);
+			}
+			
+			// commita a transacao
+			em.getTransaction().commit();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void remove(T t) throws Exception{
 		try{
@@ -57,6 +74,23 @@ public class DAO<T> implements Serializable{
 			em.merge(t);
 	
 			em.getTransaction().commit();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void atualizaListaDeObjetos(List<T> lista){
+		try {
+			// abre transacao
+			em.getTransaction().begin();
+			
+			for (T obj : lista) {
+				em.merge(obj);
+			}
+			
+			// commita a transacao
+			em.getTransaction().commit();
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -124,6 +158,20 @@ public class DAO<T> implements Serializable{
 		List<T> lista = new ArrayList<T>();
 		try {
 			lista = em.createNamedQuery(namedQuery, classe)
+				.getResultList();
+			
+			return lista;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
+	
+	public List<T> listaNamedQuery(String namedQuery, long id){
+		List<T> lista = new ArrayList<T>();
+		try {
+			lista = em.createNamedQuery(namedQuery, classe)
+				.setParameter("pId", id)
 				.getResultList();
 			
 			return lista;

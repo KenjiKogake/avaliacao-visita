@@ -27,4 +27,14 @@
 		<pattern value="/avaliacao"/>
 		<view-id value="/avaliacao.xhtml"/>
 	</url-mapping>
+	
+	<url-mapping id="cliente">
+		<pattern value="/clientes"/>
+		<view-id value="/clientes.xhtml"/>
+	</url-mapping>
+	
+	<url-mapping id="funcionario">
+		<pattern value="/funcionarios"/>
+		<view-id value="/funcionarios.xhtml"/>
+	</url-mapping>
 </pretty-config>

@@ -32,7 +32,7 @@ public class AvaliacaoBean implements Serializable {
 	private DAO<Questao> daoQuestao;
 	@Inject
 	private DAO<QuestoesDaAvaliacao> daoQuestoesDaAvaliacao;
-	
+
 	private List<Nota> notas;
 
 	@Inject
@@ -62,15 +62,8 @@ public class AvaliacaoBean implements Serializable {
 	
 	public void salvar() {
 		try {
-			for (QuestoesDaAvaliacao questao : avaliacao.getQuestoes()) {
-				daoQuestoesDaAvaliacao.adiciona(questao);
-			}
-			
-			if(avaliacao.getId() == null){
-				dao.adiciona(avaliacao);
-			}else{
-				dao.atualiza(avaliacao);
-			}
+			dao.atualiza(avaliacao);
+			daoQuestoesDaAvaliacao.atualizaListaDeObjetos(avaliacao.getQuestoes());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,13 +107,15 @@ public class AvaliacaoBean implements Serializable {
 	
 	public void iniciarQuestionario(){
 		try {
-			dao.adiciona(avaliacao);
-		
 		
 			List<Questao> questoes = getQuestoesAtivas();
 			for (Questao questao : questoes) {
-				avaliacao.adicionaQuestao(questao, new Nota());
+				avaliacao.adicionaQuestao(questao);
 			}
+			
+			dao.adiciona(avaliacao);
+			daoQuestoesDaAvaliacao.adicionaListaDeObjetos(avaliacao.getQuestoes());
+			
 			notas = daoNota.listaTodos();
 			
 		} catch (Exception e) {
@@ -129,7 +124,6 @@ public class AvaliacaoBean implements Serializable {
 	}
 	
 	public List<Nota> getNotas() {
-		System.out.println(notas.size());
 		return notas;
 	}
 }

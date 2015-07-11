@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	<p:commandButton value="Novo" action="#{clienteBean.criaNovoCliente}" oncomplete="PF('clienteDialog').show()" update="form" process="@this"/>
+	<h:form id="formFiltro">
+		<h:panelGrid columns="1">
+			<p:inputText value="#{clienteBean.filtroCliente.nome}" placeholder="Filtro por Cliente">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{clienteBean.filtroCliente.email}" placeholder="Filtro por E-mail">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{clienteBean.filtroCliente.telefone}" placeholder="Filtro por Telefone">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{clienteBean.filtroCliente.celular}" placeholder="Filtro por Celular">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:selectOneMenu id="filtroStatus" value="#{clienteBean.filtroCliente.status}" style="width:125px">
+				<p:ajax listener="#{clienteBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+	        </p:selectOneMenu>
+		</h:panelGrid>
+	</h:form>
+	<h:form id="formLista">
+		<p:dataTable id="table" value="#{clienteBean.model}" var="c" lazy="true" rows="5"
+			paginator="true" selectionMode="single" rowKey="#{c.id}">
+			
+			<p:ajax event="rowSelect" listener="#{clienteBean.onRowSelect}" update="form" oncomplete="PF('clienteDialog').show()"/>
+			
+			<p:column headerText="Id" sortBy="#{c.id}" filterBy="#{c.id}">
+				<h:outputText value="#{c.id}"/>
+			</p:column>
+			<p:column headerText="Cliente" sortBy="#{c.nome}">
+				<h:outputText value="#{c.nome}"/>
+			</p:column>
+			<p:column headerText="E-mail" sortBy="#{c.email}">
+				<h:outputText value="#{c.email}"/>
+			</p:column>
+			<p:column headerText="Telefone" sortBy="#{c.telefone}">
+				<h:outputText value="#{c.telefone}"/>
+			</p:column>
+			<p:column headerText="Celular" sortBy="#{c.celular}">
+				<h:outputText value="#{c.celular}"/>			
+			</p:column>
+			<p:column headerText="Status" sortBy="#{c.status}">
+				<h:outputText value="#{c.status}"/>			
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<p:dialog header="Cadastro de Cliente" widgetVar="clienteDialog" resizable="false" 
+		modal="true" draggable="false" closeOnEscape="true">
+			<h:form id="form">
+			<p:messages id="msgs"/>
+				<h:panelGrid columns="2" id="clientePanelGrid">
+		
+					<h:outputLabel for="id" value="Código"/>
+					<p:inputText id="id" value="#{clienteBean.cliente.id}"/>
+		
+					<h:outputLabel for="cliente" value="Cliente"/>
+					<p:inputText id="cliente" value="#{clienteBean.cliente.nome}"/>
+					
+					<h:outputLabel for="email" value="E-mail"/>
+					<p:inputText id="email" value="#{clienteBean.cliente.email}"/>
+					
+					<h:outputLabel for="telefone" value="Telefone"/>
+					<p:inputMask id="telefone" mask="(99)9999-9999" value="#{clienteBean.cliente.telefone}"/>
+					
+					<h:outputLabel for="celular" value="Celular"/>
+					<p:inputMask id="celular" mask="(99)99999-9999" value="#{clienteBean.cliente.celular}"/>
+					
+					<p:commandButton value="Gravar" actionListener="#{clienteBean.salvar}" update="@form :formLista"
+						process="@form"/>
+						
+					<p:commandButton value="Desativar" actionListener="#{clienteBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('clienteDialog').hide()" rendered="#{clienteBean.ativo}">
+						<p:confirm header="Confirmar" message="Deseja desativar esta Cliente?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:commandButton value="Reativar" actionListener="#{clienteBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('clienteDialog').hide()" rendered="#{!clienteBean.ativo and !clienteBean.novo}"/>
+					
+						
+					<p:commandButton value="Resetar Senha" actionListener="#{clienteBean.resetarSenha}" update="@form :formLista"
+						process="@form" rendered="#{clienteBean.ativo}">
+						<p:confirm header="Confirmar" message="Deseja resetar a Senha?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:confirmDialog global="true" showEffect="fade">
+				        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+				</h:panelGrid>
+			</h:form>
+	</p:dialog>
+	
+	</ui:define>
+</ui:composition>
+</html>

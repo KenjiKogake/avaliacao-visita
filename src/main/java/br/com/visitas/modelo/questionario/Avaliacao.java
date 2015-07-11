@@ -103,6 +103,10 @@ public class Avaliacao implements Serializable{
 		this.questoes = questoes;
 	}
 	
+	public void adicionaQuestao(Questao questao){
+		this.questoes.add(new QuestoesDaAvaliacao(this, questao));
+	}
+	
 	public void adicionaQuestao(Questao questao, Nota nota){
 		this.questoes.add(new QuestoesDaAvaliacao(this, questao, nota));
 	}

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="titulo">
+	</ui:define>
+	<ui:define name="conteudo">
+	<p:commandButton value="Novo" action="#{funcionarioBean.criaNovoFuncionario}" oncomplete="PF('funcionarioDialog').show()" update="form" process="@this"/>
+	<h:form id="formFiltro">
+		<h:panelGrid columns="1">
+			<p:inputText value="#{funcionarioBean.filtroFuncionario.nome}" placeholder="Filtro por Funcionario">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{funcionarioBean.filtroFuncionario.email}" placeholder="Filtro por E-mail">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{funcionarioBean.filtroFuncionario.telefone}" placeholder="Filtro por Telefone">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:inputText value="#{funcionarioBean.filtroFuncionario.celular}" placeholder="Filtro por Celular">
+				<p:ajax update="formLista"/>
+			</p:inputText>
+			<p:selectOneMenu id="filtroStatus" value="#{funcionarioBean.filtroFuncionario.status}" style="width:125px">
+				<p:ajax listener="#{funcionarioBean.aplicaFiltroOneMenu}" event="change" update="formLista:table"/>
+	            <f:selectItem itemLabel="Filtro por Status" itemValue="#{null}" />
+	            <f:selectItem itemLabel="Ativos" itemValue="Ativo" />
+	            <f:selectItem itemLabel="Inativos" itemValue="Inativo" />
+	        </p:selectOneMenu>
+		</h:panelGrid>
+	</h:form>
+	<h:form id="formLista">
+		<p:dataTable id="table" value="#{funcionarioBean.model}" var="f" lazy="true" rows="5"
+			paginator="true" selectionMode="single" rowKey="#{f.id}">
+			
+			<p:ajax event="rowSelect" listener="#{funcionarioBean.onRowSelect}" update="form" oncomplete="PF('funcionarioDialog').show()"/>
+			
+			<p:column headerText="Id" sortBy="#{f.id}" filterBy="#{f.id}">
+				<h:outputText value="#{f.id}"/>
+			</p:column>
+			<p:column headerText="Funcionario" sortBy="#{f.nome}">
+				<h:outputText value="#{f.nome}"/>
+			</p:column>
+			<p:column headerText="E-mail" sortBy="#{f.email}">
+				<h:outputText value="#{f.email}"/>
+			</p:column>
+			<p:column headerText="Telefone" sortBy="#{f.telefone}">
+				<h:outputText value="#{f.telefone}"/>
+			</p:column>
+			<p:column headerText="Celular" sortBy="#{f.celular}">
+				<h:outputText value="#{f.celular}"/>			
+			</p:column>
+			<p:column headerText="Status" sortBy="#{f.status}">
+				<h:outputText value="#{f.status}"/>			
+			</p:column>
+		</p:dataTable>
+	</h:form>
+	
+	<p:dialog header="Cadastro de Funcionario" widgetVar="funcionarioDialog" resizable="false" 
+		modal="true" draggable="false" closeOnEscape="true">
+			<h:form id="form">
+			<p:messages id="msgs"/>
+				<h:panelGrid columns="2" id="funcionarioPanelGrid">
+		
+					<h:outputLabel for="id" value="Código"/>
+					<p:inputText id="id" value="#{funcionarioBean.funcionario.id}"/>
+		
+					<h:outputLabel for="funcionario" value="Funcionario"/>
+					<p:inputText id="funcionario" value="#{funcionarioBean.funcionario.nome}"/>
+					
+					<h:outputLabel for="email" value="E-mail"/>
+					<p:inputText id="email" value="#{funcionarioBean.funcionario.email}"/>
+					
+					<h:outputLabel for="telefone" value="Telefone"/>
+					<p:inputMask id="telefone" mask="(99)9999-9999" value="#{funcionarioBean.funcionario.telefone}"/>
+					
+					<h:outputLabel for="celular" value="Celular"/>
+					<p:inputMask id="celular" mask="(99)99999-9999" value="#{funcionarioBean.funcionario.celular}"/>
+					
+					<p:commandButton value="Gravar" actionListener="#{funcionarioBean.salvar}" update="@form :formLista"
+						process="@form"/>
+						
+					<p:commandButton value="Desativar" actionListener="#{funcionarioBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('funcionarioDialog').hide()" rendered="#{funcionarioBean.ativo}">
+						<p:confirm header="Confirmar" message="Deseja desativar esta Funcionario?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:commandButton value="Reativar" actionListener="#{funcionarioBean.alterarStatus}" update="@form :formLista"
+						process="@form" oncomplete="PF('funcionarioDialog').hide()" rendered="#{!funcionarioBean.ativo and !funcionarioBean.novo}"/>
+					
+						
+					<p:commandButton value="Resetar Senha" actionListener="#{funcionarioBean.resetarSenha}" update="@form :formLista"
+						process="@form" rendered="#{funcionarioBean.ativo}">
+						<p:confirm header="Confirmar" message="Deseja resetar a Senha?" icon="ui-icon-alert" />
+					</p:commandButton>
+					
+					<p:confirmDialog global="true" showEffect="fade">
+				        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+				</h:panelGrid>
+			</h:form>
+	</p:dialog>
+	
+	</ui:define>
+</ui:composition>
+</html>
