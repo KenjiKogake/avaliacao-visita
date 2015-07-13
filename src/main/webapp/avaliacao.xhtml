@@ -36,7 +36,7 @@
 			<p:panelGrid columns="3">
 				<h:outputLabel value="#{q.questao.questao}"/>
 				
-				<p:selectOneButton id="nota" value="#{q.nota}"  converter="entityConverter">
+				<p:selectOneButton id="nota" value="#{q.nota}"  converter="entityConverter" required="#{q.questao.opcional=='Sim'? false : true}">
 					<f:selectItems value="#{avaliacaoBean.notas}" var="n" itemLabel="#{n.nota}"/>
 				</p:selectOneButton>
 			</p:panelGrid>
